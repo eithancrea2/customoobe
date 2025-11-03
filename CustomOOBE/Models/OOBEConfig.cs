@@ -30,9 +30,11 @@ namespace CustomOOBE.Models
         public string Description { get; set; } = "";
         public string Category { get; set; } = "";
         public string DownloadUrl { get; set; } = "";
+        public string IconUrl { get; set; } = "";
         public string IconPath { get; set; } = "";
         public bool IsSelected { get; set; }
         public long SizeInMB { get; set; }
+        public System.Windows.Media.ImageSource? Icon { get; set; }
     }
 
     public class Review

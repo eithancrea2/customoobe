@@ -17,6 +17,7 @@ namespace CustomOOBE
         private TaskManagerBlocker _taskManagerBlocker;
         private int _currentStep = 0;
         private readonly DispatcherTimer _animationTimer;
+        private readonly AudioService _audioService;
 
         public MainWindow()
         {
@@ -24,6 +25,7 @@ namespace CustomOOBE
 
             _keyboardBlocker = new KeyboardBlocker();
             _taskManagerBlocker = new TaskManagerBlocker();
+            _audioService = new AudioService();
 
             _animationTimer = new DispatcherTimer
             {
@@ -43,6 +45,10 @@ namespace CustomOOBE
             // Iniciar animación de fondo
             StartBackgroundAnimation();
 
+            // Iniciar música de fondo si existe un archivo (opcional)
+            // _audioService.StartBackgroundMusic("path/to/music.mp3");
+            // MuteButton.Visibility = Visibility.Visible;
+
             // Navegar a la primera pantalla
             ContentFrame.Navigate(new WelcomePage(this));
         }
@@ -53,6 +59,7 @@ namespace CustomOOBE
             _keyboardBlocker.StopBlocking();
             _taskManagerBlocker.StopBlocking();
             _animationTimer.Stop();
+            _audioService.Dispose();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -152,21 +159,22 @@ namespace CustomOOBE
 
         private void CreateFloatingCircle()
         {
-            var size = _random.Next(30, 150);
+            var size = _random.Next(40, 180);
             var circle = new Ellipse
             {
                 Width = size,
                 Height = size,
-                Opacity = 0.1
+                Opacity = 0
             };
 
-            // Color basado en el tema actual
+            // Color basado en el tema actual con más contraste
             var accentColor = (Color)Application.Current.Resources["AccentColor"];
             var brush = new RadialGradientBrush
             {
                 GradientStops = new GradientStopCollection
                 {
-                    new GradientStop(Color.FromArgb(60, accentColor.R, accentColor.G, accentColor.B), 0),
+                    new GradientStop(Color.FromArgb(80, accentColor.R, accentColor.G, accentColor.B), 0),
+                    new GradientStop(Color.FromArgb(40, accentColor.R, accentColor.G, accentColor.B), 0.5),
                     new GradientStop(Colors.Transparent, 1)
                 }
             };
@@ -180,31 +188,35 @@ namespace CustomOOBE
 
             AnimationCanvas.Children.Add(circle);
 
-            // Animación de movimiento
+            var duration = _random.Next(10, 20);
+
+            // Animación de movimiento vertical - más suave
             var moveAnimation = new DoubleAnimation
             {
                 From = startY,
                 To = -size,
-                Duration = TimeSpan.FromSeconds(_random.Next(8, 15)),
-                EasingFunction = new QuadraticEase()
+                Duration = TimeSpan.FromSeconds(duration),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
             };
 
-            // Animación de movimiento horizontal
+            // Animación de movimiento horizontal - efecto de deriva
             var horizontalAnimation = new DoubleAnimation
             {
                 From = startX,
-                To = startX + _random.Next(-200, 200),
-                Duration = TimeSpan.FromSeconds(_random.Next(8, 15)),
-                EasingFunction = new SineEase()
+                To = startX + _random.Next(-250, 250),
+                Duration = TimeSpan.FromSeconds(duration),
+                EasingFunction = new SineEase { EasingMode = EasingMode.EaseInOut }
             };
 
-            // Animación de opacidad
+            // Animación de opacidad - fade in/out más suave
             var opacityAnimation = new DoubleAnimation
             {
                 From = 0,
-                To = 0.15,
-                Duration = TimeSpan.FromSeconds(2),
-                AutoReverse = true
+                To = 0.20,
+                Duration = TimeSpan.FromSeconds(3),
+                AutoReverse = true,
+                RepeatBehavior = RepeatBehavior.Forever,
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseInOut }
             };
 
             moveAnimation.Completed += (s, e) =>
@@ -222,5 +234,14 @@ namespace CustomOOBE
             _keyboardBlocker.StopBlocking();
             _taskManagerBlocker.StopBlocking();
         }
+
+        private void MuteButton_Click(object sender, RoutedEventArgs e)
+        {
+            _audioService.ToggleMuteMusic();
+            // Actualizar icono del botón
+            // Nota: Esto requiere acceso al TextBlock dentro del template, por simplicidad usamos el evento
+        }
+
+        public AudioService GetAudioService() => _audioService;
     }
 }

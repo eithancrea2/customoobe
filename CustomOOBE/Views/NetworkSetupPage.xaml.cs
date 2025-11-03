@@ -29,13 +29,14 @@ namespace CustomOOBE.Views
             var fadeIn = new DoubleAnimation { From = 0, To = 1, Duration = TimeSpan.FromSeconds(0.5) };
             ContentPanel.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
-            // Verificar conexión Ethernet
-            if (_wifiService.IsEthernetConnected() && _wifiService.IsConnectedToInternet())
+            // Verificar conexión Ethernet o WiFi
+            if ((_wifiService.IsEthernetConnected() || _wifiService.IsWiFiConnected()) && _wifiService.IsConnectedToInternet())
             {
-                StatusText.Text = "✓ Conectado por cable Ethernet";
+                StatusText.Text = _wifiService.IsEthernetConnected() ? "✓ Conectado por cable Ethernet" : "✓ Conectado a WiFi";
                 StatusText.Foreground = System.Windows.Media.Brushes.Green;
                 StatusText.Visibility = Visibility.Visible;
                 NextButton.IsEnabled = true;
+                SkipButton.IsEnabled = false; // Deshabilitar Skip si ya está conectado
             }
             else
             {
@@ -88,6 +89,7 @@ namespace CustomOOBE.Views
                 StatusText.Text = "✓ Conectado exitosamente";
                 StatusText.Foreground = System.Windows.Media.Brushes.Green;
                 NextButton.IsEnabled = true;
+                SkipButton.IsEnabled = false; // Deshabilitar Skip después de conectar
             }
             else
             {
@@ -98,7 +100,24 @@ namespace CustomOOBE.Views
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e) => await LoadNetworks();
         private void BackButton_Click(object sender, RoutedEventArgs e) => NavigationService?.GoBack();
-        private void SkipButton_Click(object sender, RoutedEventArgs e) => NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username));
+
+        private void SkipButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Mostrar advertencia al saltar
+            WarningDialog.Visibility = Visibility.Visible;
+        }
+
+        private void ContinueWithoutInternet_Click(object sender, RoutedEventArgs e)
+        {
+            WarningDialog.Visibility = Visibility.Collapsed;
+            NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username));
+        }
+
+        private void CancelSkip_Click(object sender, RoutedEventArgs e)
+        {
+            WarningDialog.Visibility = Visibility.Collapsed;
+        }
+
         private void NextButton_Click(object sender, RoutedEventArgs e) => NavigationService?.Navigate(new SoftwareSetupPage(_mainWindow, _username));
         private void CancelPassword_Click(object sender, RoutedEventArgs e) => PasswordDialog.Visibility = Visibility.Collapsed;
 

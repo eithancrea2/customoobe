@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,15 +13,17 @@ namespace CustomOOBE.Views
     {
         private readonly MainWindow _mainWindow;
         private readonly string _username;
+        private readonly List<SoftwarePackage>? _softwareToInstall;
         private readonly DatabaseService _databaseService;
         private int _rating = 0;
         private readonly Button[] _stars;
 
-        public ReviewPage(MainWindow mainWindow, string username)
+        public ReviewPage(MainWindow mainWindow, string username, List<SoftwarePackage>? softwareToInstall = null)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             _username = username;
+            _softwareToInstall = softwareToInstall;
 
             var dbPath = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
@@ -56,7 +59,7 @@ namespace CustomOOBE.Views
         }
 
         private void SkipButton_Click(object sender, RoutedEventArgs e) =>
-            NavigationService?.Navigate(new FinalPage(_mainWindow));
+            NavigationService?.Navigate(new InstallationPage(_mainWindow, _username, _softwareToInstall ?? new List<SoftwarePackage>()));
 
         private async void SubmitButton_Click(object sender, RoutedEventArgs e)
         {
@@ -74,7 +77,7 @@ namespace CustomOOBE.Views
 
             await _databaseService.SaveReviewAsync(review);
 
-            NavigationService?.Navigate(new FinalPage(_mainWindow));
+            NavigationService?.Navigate(new InstallationPage(_mainWindow, _username, _softwareToInstall ?? new List<SoftwarePackage>()));
         }
     }
 }

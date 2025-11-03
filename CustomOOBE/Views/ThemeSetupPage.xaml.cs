@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using CustomOOBE.Models;
 using CustomOOBE.Services;
 
 namespace CustomOOBE.Views
@@ -14,14 +16,16 @@ namespace CustomOOBE.Views
         private readonly MainWindow _mainWindow;
         private readonly string _username;
         private readonly ThemeService _themeService;
+        private readonly List<SoftwarePackage>? _softwareToInstall;
         private bool _isDarkTheme;
         private string _selectedWallpaper = "";
 
-        public ThemeSetupPage(MainWindow mainWindow, string username)
+        public ThemeSetupPage(MainWindow mainWindow, string username, List<SoftwarePackage>? softwareToInstall = null)
         {
             InitializeComponent();
             _mainWindow = mainWindow;
             _username = username;
+            _softwareToInstall = softwareToInstall;
             _themeService = new ThemeService();
             _isDarkTheme = _themeService.IsDarkTime();
         }
@@ -148,7 +152,7 @@ namespace CustomOOBE.Views
             if (!string.IsNullOrEmpty(_selectedWallpaper))
                 await _themeService.SetWallpaperAsync(_selectedWallpaper);
 
-            NavigationService?.Navigate(new ReviewPage(_mainWindow, _username));
+            NavigationService?.Navigate(new ReviewPage(_mainWindow, _username, _softwareToInstall));
         }
     }
 }

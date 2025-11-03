@@ -10,8 +10,10 @@
     <SolidColorBrush x:Key="BorderBrush" Color="#D2D2D7"/>
     <SolidColorBrush x:Key="HoverBrush" Color="#F5F5F7"/>
     <SolidColorBrush x:Key="InputBackgroundBrush" Color="#FFFFFF"/>
-    <SolidColorBrush x:Key="AnimationBackgroundBrush" Color="#F5F5F7"/>
+    <!-- Cambiado a un color más oscuro y visible para modo claro -->
+    <SolidColorBrush x:Key="AnimationBackgroundBrush" Color="#1A1A1A"/>
 
-    <Color x:Key="AccentColor">#0071E3</Color>
+    <!-- Color para las animaciones - más oscuro y contrastante en modo claro -->
+    <Color x:Key="AccentColor">#1D1D1F</Color>
 
 </ResourceDictionary>

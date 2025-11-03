@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Windows.Media.Imaging;
 using CustomOOBE.Models;
 
 namespace CustomOOBE.Services
@@ -23,6 +24,7 @@ namespace CustomOOBE.Services
                     Description = "Navegador web rápido y seguro",
                     Category = "Navegadores",
                     DownloadUrl = "https://dl.google.com/chrome/install/latest/chrome_installer.exe",
+                    IconUrl = "https://www.google.com/chrome/static/images/chrome-logo-m100.svg",
                     SizeInMB = 90
                 },
                 new SoftwarePackage
@@ -31,6 +33,7 @@ namespace CustomOOBE.Services
                     Description = "Navegador web de código abierto",
                     Category = "Navegadores",
                     DownloadUrl = "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=es-ES",
+                    IconUrl = "https://www.mozilla.org/media/protocol/img/logos/firefox/browser/logo.svg",
                     SizeInMB = 60
                 },
                 new SoftwarePackage
@@ -38,6 +41,7 @@ namespace CustomOOBE.Services
                     Name = "Microsoft Edge",
                     Description = "Navegador web de Microsoft (Preinstalado)",
                     Category = "Navegadores",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/9/98/Microsoft_Edge_logo_%282019%29.svg",
                     DownloadUrl = "",
                     SizeInMB = 0
                 },
@@ -48,6 +52,7 @@ namespace CustomOOBE.Services
                     Name = "7-Zip",
                     Description = "Compresor de archivos gratuito",
                     Category = "Compresión",
+                    IconUrl = "https://www.7-zip.org/7ziplogo.png",
                     DownloadUrl = "https://www.7-zip.org/a/7z2301-x64.exe",
                     SizeInMB = 1
                 },
@@ -56,6 +61,7 @@ namespace CustomOOBE.Services
                     Name = "WinRAR",
                     Description = "Compresor de archivos popular",
                     Category = "Compresión",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/f/f4/WinRAR_Logo.svg",
                     DownloadUrl = "https://www.rarlab.com/rar/winrar-x64-623.exe",
                     SizeInMB = 3
                 },
@@ -66,6 +72,7 @@ namespace CustomOOBE.Services
                     Name = "VLC Media Player",
                     Description = "Reproductor multimedia universal",
                     Category = "Multimedia",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/e/e6/VLC_Icon.svg",
                     DownloadUrl = "https://get.videolan.org/vlc/last/win64/vlc-3.0.20-win64.exe",
                     SizeInMB = 40
                 },
@@ -74,6 +81,7 @@ namespace CustomOOBE.Services
                     Name = "Windows Media Player",
                     Description = "Reproductor de Windows (Preinstalado)",
                     Category = "Multimedia",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/c/c8/Windows_Media_Player_2020_icon.svg",
                     DownloadUrl = "",
                     SizeInMB = 0
                 },
@@ -84,6 +92,7 @@ namespace CustomOOBE.Services
                     Name = "CCleaner",
                     Description = "Limpiador y optimizador del sistema",
                     Category = "Optimización",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/1/1b/CCleaner_icon.svg",
                     DownloadUrl = "https://download.ccleaner.com/ccsetup608.exe",
                     SizeInMB = 50
                 },
@@ -94,6 +103,7 @@ namespace CustomOOBE.Services
                     Name = "Windows Defender",
                     Description = "Antivirus integrado de Windows (Preinstalado)",
                     Category = "Seguridad",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/7/7e/Windows_Defender_logo.svg",
                     DownloadUrl = "",
                     SizeInMB = 0
                 },
@@ -102,6 +112,7 @@ namespace CustomOOBE.Services
                     Name = "Avast Free Antivirus",
                     Description = "Antivirus gratuito",
                     Category = "Seguridad",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/0/08/Avast_Software_logo.svg",
                     DownloadUrl = "https://www.avast.com/download-thank-you.php?product=FAV-ONLINE",
                     SizeInMB = 500
                 },
@@ -112,6 +123,7 @@ namespace CustomOOBE.Services
                     Name = "Adobe Acrobat Reader",
                     Description = "Lector de documentos PDF",
                     Category = "Productividad",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/8/87/PDF_file_icon.svg",
                     DownloadUrl = "https://ardownload2.adobe.com/pub/adobe/reader/win/AcrobatDC/2300820360/AcroRdrDC2300820360_en_US.exe",
                     SizeInMB = 200
                 },
@@ -120,6 +132,7 @@ namespace CustomOOBE.Services
                     Name = "LibreOffice",
                     Description = "Suite ofimática de código abierto",
                     Category = "Productividad",
+                    IconUrl = "https://upload.wikimedia.org/wikipedia/commons/a/a8/LibreOffice_logo.svg",
                     DownloadUrl = "https://download.documentfoundation.org/libreoffice/stable/7.6.4/win/x86_64/LibreOffice_7.6.4_Win_x64.msi",
                     SizeInMB = 300
                 },
@@ -130,6 +143,7 @@ namespace CustomOOBE.Services
                     Name = "Discord",
                     Description = "Plataforma de comunicación",
                     Category = "Comunicación",
+                    IconUrl = "https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.svg",
                     DownloadUrl = "https://discord.com/api/downloads/distributions/app/installers/latest?channel=stable&platform=win&arch=x64",
                     SizeInMB = 90
                 },
@@ -138,10 +152,37 @@ namespace CustomOOBE.Services
                     Name = "Zoom",
                     Description = "Videoconferencias",
                     Category = "Comunicación",
+                    IconUrl = "https://st1.zoom.us/static/5.17.11.3721/image/new/ZoomLogo.png",
                     DownloadUrl = "https://zoom.us/client/latest/ZoomInstallerFull.exe",
                     SizeInMB = 50
                 }
             };
+        }
+
+        public async Task<BitmapImage?> DownloadIconAsync(string iconUrl)
+        {
+            if (string.IsNullOrEmpty(iconUrl))
+                return null;
+
+            try
+            {
+                var imageData = await _httpClient.GetByteArrayAsync(iconUrl);
+                var bitmap = new BitmapImage();
+                using (var stream = new MemoryStream(imageData))
+                {
+                    bitmap.BeginInit();
+                    bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                    bitmap.StreamSource = stream;
+                    bitmap.EndInit();
+                    bitmap.Freeze();
+                }
+                return bitmap;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al descargar icono desde {iconUrl}: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<bool> DownloadAndInstallAsync(SoftwarePackage package, IProgress<int> progress)

@@ -71,5 +71,29 @@
                 </StackPanel>
             </Border>
         </Border>
+
+        <!-- Dialog de advertencia al saltar -->
+        <Border x:Name="WarningDialog" Background="#CC000000" Visibility="Collapsed">
+            <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="12" Padding="40" MaxWidth="550" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel>
+                    <TextBlock Text="⚠️ Continuar sin Internet" Style="{StaticResource TitleTextStyle}" FontSize="24" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="16" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,15" TextAlignment="Center">
+                        Si continúas sin conexión a Internet:
+                    </TextBlock>
+                    <StackPanel Margin="20,0,20,20">
+                        <TextBlock Text="• No se podrán descargar programas" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5"/>
+                        <TextBlock Text="• Algunas características estarán limitadas" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5"/>
+                        <TextBlock Text="• No se verificarán actualizaciones" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5"/>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" FontSize="15" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,25" TextAlignment="Center" FontWeight="Medium">
+                        Es altamente recomendado conectarse a Internet
+                    </TextBlock>
+                    <Grid>
+                        <Button Content="Volver" Style="{StaticResource PrimaryButtonStyle}" Click="CancelSkip_Click" HorizontalAlignment="Left" MinWidth="140"/>
+                        <Button Content="Continuar sin Internet" Style="{StaticResource SecondaryButtonStyle}" Click="ContinueWithoutInternet_Click" HorizontalAlignment="Right" MinWidth="200"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Border>
     </Grid>
 </Page>

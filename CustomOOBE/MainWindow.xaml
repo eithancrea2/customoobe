@@ -35,6 +35,34 @@
                    Background="Transparent"/>
         </Grid>
 
+        <!-- Botón de mute de música -->
+        <Button x:Name="MuteButton" Grid.Column="1"
+                Width="40" Height="40"
+                HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,20,20,0"
+                Background="#30000000"
+                BorderThickness="0"
+                Click="MuteButton_Click"
+                Visibility="Collapsed"
+                Cursor="Hand">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                       CornerRadius="20"
+                                       BorderThickness="0">
+                                    <TextBlock x:Name="MuteIcon" Text="🔊" FontSize="20"
+                                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
         <!-- Indicador de progreso en la parte inferior -->
         <Grid Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,40">
             <StackPanel x:Name="ProgressIndicator" Orientation="Horizontal" HorizontalAlignment="Center">

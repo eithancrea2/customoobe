@@ -11,21 +11,43 @@
                 <ItemsControl x:Name="SoftwareList">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="8" Margin="0,5" Padding="15">
+                            <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Margin="0,8" Padding="20"
+                                    BorderThickness="1" BorderBrush="#20FFFFFF">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="8" ShadowDepth="2" Opacity="0.1" Color="Black"/>
+                                </Border.Effect>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}" VerticalAlignment="Center" Margin="0,0,15,0"/>
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Text="{Binding Name}" FontSize="16" FontWeight="Medium" Foreground="{DynamicResource TextBrush}"/>
-                                        <TextBlock Text="{Binding Description}" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}"/>
-                                    </StackPanel>
+
+                                    <!-- CheckBox -->
+                                    <CheckBox Grid.Column="0" IsChecked="{Binding IsSelected}"
+                                             VerticalAlignment="Center" Margin="0,0,15,0" Width="20" Height="20"/>
+
+                                    <!-- Icono del programa -->
+                                    <Border Grid.Column="1" Width="48" Height="48" Margin="0,0,15,0" CornerRadius="8"
+                                            Background="#10FFFFFF" VerticalAlignment="Center">
+                                        <Image Source="{Binding Icon}" Stretch="Uniform" Margin="8"/>
+                                    </Border>
+
+                                    <!-- Información del programa -->
                                     <StackPanel Grid.Column="2" VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Category}" FontSize="12" Foreground="{DynamicResource AccentBrush}"/>
-                                        <TextBlock FontSize="11" Foreground="{DynamicResource SecondaryTextBrush}">
+                                        <TextBlock Text="{Binding Name}" FontSize="17" FontWeight="SemiBold"
+                                                  Foreground="{DynamicResource TextBrush}" Margin="0,0,0,4"/>
+                                        <TextBlock Text="{Binding Description}" FontSize="13"
+                                                  Foreground="{DynamicResource SecondaryTextBrush}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+
+                                    <!-- Categoría y tamaño -->
+                                    <StackPanel Grid.Column="3" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="15,0,0,0">
+                                        <Border Background="{DynamicResource AccentBrush}" CornerRadius="12" Padding="12,4" Margin="0,0,0,6">
+                                            <TextBlock Text="{Binding Category}" FontSize="11" FontWeight="Medium" Foreground="White"/>
+                                        </Border>
+                                        <TextBlock HorizontalAlignment="Center" FontSize="12" Foreground="{DynamicResource SecondaryTextBrush}">
                                             <Run Text="{Binding SizeInMB}"/><Run Text=" MB"/>
                                         </TextBlock>
                                     </StackPanel>

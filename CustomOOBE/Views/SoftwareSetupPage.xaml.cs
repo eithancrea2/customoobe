@@ -21,7 +21,7 @@ namespace CustomOOBE.Views
             _softwareService = new SoftwareService();
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
             _mainWindow.UpdateProgressIndicator(3);
 
@@ -29,37 +29,31 @@ namespace CustomOOBE.Views
             ContentPanel.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
             var software = _softwareService.GetAvailableSoftware();
+
+            // Descargar iconos de manera asíncrona
+            foreach (var app in software)
+            {
+                if (!string.IsNullOrEmpty(app.IconUrl))
+                {
+                    app.Icon = await _softwareService.DownloadIconAsync(app.IconUrl);
+                }
+            }
+
             SoftwareList.ItemsSource = software;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e) => NavigationService?.GoBack();
 
         private void SkipButton_Click(object sender, RoutedEventArgs e) =>
-            NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username));
+            NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username, new System.Collections.Generic.List<Models.SoftwarePackage>()));
 
-        private async void NextButton_Click(object sender, RoutedEventArgs e)
+        private void NextButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedSoftware = _softwareService.GetAvailableSoftware()
                 .Where(s => s.IsSelected).ToList();
 
-            if (selectedSoftware.Count == 0)
-            {
-                NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username));
-                return;
-            }
-
-            NextButton.IsEnabled = false;
-            InstallProgress.Visibility = Visibility.Visible;
-
-            var progress = new Progress<(string packageName, int progress)>(update =>
-            {
-                ProgressText.Text = $"Instalando {update.packageName}...";
-                ProgressBar.Value = update.progress;
-            });
-
-            await _softwareService.InstallSelectedSoftwareAsync(selectedSoftware, progress);
-
-            NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username));
+            // Navegar a la página de tema primero
+            NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username, selectedSoftware));
         }
     }
 }

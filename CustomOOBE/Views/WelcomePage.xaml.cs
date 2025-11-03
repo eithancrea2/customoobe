@@ -14,8 +14,8 @@ namespace CustomOOBE.Views
             InitializeComponent();
             _mainWindow = mainWindow;
 
-            // Cargar nombre del equipo desde configuración
-            var computerName = Environment.GetEnvironmentVariable("COMPUTER_NAME") ?? "Equipo Premium";
+            // Obtener nombre real del equipo desde System Information
+            var computerName = Environment.MachineName ?? Environment.GetEnvironmentVariable("COMPUTERNAME") ?? "Este Equipo";
             ComputerNameRun.Text = computerName;
         }
 
