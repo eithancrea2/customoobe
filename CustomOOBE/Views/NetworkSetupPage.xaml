@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="700" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="Configurar conexión a Internet" Margin="0,0,0,30"/>
 
             <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Padding="20" Margin="0,0,0,20">

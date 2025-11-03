@@ -73,6 +73,10 @@ namespace CustomOOBE.Views
             };
 
             ConfigurationPanel.BeginAnimation(UIElement.OpacityProperty, fadeInPanel);
+
+            // Esperar 3 segundos y navegar automáticamente
+            await System.Threading.Tasks.Task.Delay(3000);
+            NavigationService?.Navigate(new UserSetupPage(_mainWindow));
         }
 
         private System.Threading.Tasks.Task AnimateMessage(UIElement element, int delay)
@@ -108,10 +112,5 @@ namespace CustomOOBE.Views
             return tcs.Task;
         }
 
-        private void ContinueButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Navegar a la página de creación de usuario
-            NavigationService?.Navigate(new UserSetupPage(_mainWindow));
-        }
     }
 }

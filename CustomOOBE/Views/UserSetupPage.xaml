@@ -9,7 +9,7 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="700" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
 
             <!-- Título -->
             <TextBlock Style="{StaticResource TitleTextStyle}"

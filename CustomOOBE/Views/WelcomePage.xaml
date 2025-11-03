@@ -46,14 +46,6 @@
                        TextAlignment="Center"
                        Margin="0,0,0,60"/>
 
-            <!-- Botón para continuar -->
-            <Button x:Name="ContinueButton"
-                    Style="{StaticResource PrimaryButtonStyle}"
-                    Content="Comenzar"
-                    HorizontalAlignment="Center"
-                    Click="ContinueButton_Click"
-                    MinWidth="200"/>
-
         </StackPanel>
     </Grid>
 </Page>
