@@ -6,7 +6,7 @@
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="{DynamicResource SecondaryDisplayBrush}"
-        Topmost="True"
+        Topmost="False"
         ShowInTaskbar="False">
     <Grid>
         <!-- Pantalla completa blanca o negra según el tema -->

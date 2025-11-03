@@ -3,30 +3,32 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="600" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
-            <TextBlock Style="{StaticResource TitleTextStyle}" Text="¿Qué te pareció?" Margin="0,0,0,20"/>
-            <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Tu opinión nos ayuda a mejorar" TextWrapping="Wrap" Margin="0,0,0,40"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="600" MinWidth="450" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="¿Qué te pareció?" Margin="0,0,0,15"/>
+                <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Tu opinión nos ayuda a mejorar" TextWrapping="Wrap" Margin="0,0,0,30"/>
 
             <!-- Estrellas de calificación -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,30">
-                <Button x:Name="Star1" Content="⭐" FontSize="48" Click="Star_Click" Tag="1" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
-                <Button x:Name="Star2" Content="⭐" FontSize="48" Click="Star_Click" Tag="2" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
-                <Button x:Name="Star3" Content="⭐" FontSize="48" Click="Star_Click" Tag="3" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
-                <Button x:Name="Star4" Content="⭐" FontSize="48" Click="Star_Click" Tag="4" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
-                <Button x:Name="Star5" Content="⭐" FontSize="48" Click="Star_Click" Tag="5" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,25">
+                <Button x:Name="Star1" Content="⭐" FontSize="40" Click="Star_Click" Tag="1" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
+                <Button x:Name="Star2" Content="⭐" FontSize="40" Click="Star_Click" Tag="2" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
+                <Button x:Name="Star3" Content="⭐" FontSize="40" Click="Star_Click" Tag="3" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
+                <Button x:Name="Star4" Content="⭐" FontSize="40" Click="Star_Click" Tag="4" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
+                <Button x:Name="Star5" Content="⭐" FontSize="40" Click="Star_Click" Tag="5" Style="{StaticResource SecondaryButtonStyle}" Background="Transparent" BorderThickness="0"/>
             </StackPanel>
 
             <!-- Comentario -->
-            <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Comentarios (opcional)" HorizontalAlignment="Left" FontSize="16" Margin="0,0,0,10"/>
+            <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Comentarios (opcional)" HorizontalAlignment="Left" FontSize="15" Margin="0,0,0,10"/>
             <TextBox x:Name="CommentBox" Style="{StaticResource ModernTextBoxStyle}" TextWrapping="Wrap" AcceptsReturn="True"
-                     MinHeight="100" MaxLength="500" Margin="0,0,0,30"/>
+                     MinHeight="80" MaxLength="500" Margin="0,0,0,25"/>
 
             <!-- Botones -->
             <Grid>
-                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Saltar" Click="SkipButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
+                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Saltar" Click="SkipButton_Click" HorizontalAlignment="Left" MinWidth="110"/>
                 <Button x:Name="SubmitButton" Style="{StaticResource PrimaryButtonStyle}" Content="Enviar" Click="SubmitButton_Click"
-                        HorizontalAlignment="Right" MinWidth="120" IsEnabled="False"/>
+                        HorizontalAlignment="Right" MinWidth="110" IsEnabled="False"/>
             </Grid>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

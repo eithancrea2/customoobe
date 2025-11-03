@@ -3,8 +3,9 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="700" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
-            <TextBlock Style="{StaticResource TitleTextStyle}" Text="Configurar conexión a Internet" Margin="0,0,0,30"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="700" MinWidth="500" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
+                <TextBlock Style="{StaticResource TitleTextStyle}" Text="Configurar conexión a Internet" Margin="0,0,0,25"/>
 
             <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Padding="20" Margin="0,0,0,20">
                 <StackPanel>
@@ -14,7 +15,7 @@
                                 HorizontalAlignment="Right" Padding="15,5"/>
                     </Grid>
 
-                    <ScrollViewer MaxHeight="400" VerticalScrollBarVisibility="Auto">
+                    <ScrollViewer MaxHeight="300" VerticalScrollBarVisibility="Auto">
                         <ItemsControl x:Name="NetworksList">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
@@ -49,24 +50,25 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Content="Atrás"
-                        Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
+                        Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="100"/>
                 <Button Grid.Column="1" x:Name="SkipButton" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar"
-                        Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="120"/>
+                        Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="100"/>
                 <Button Grid.Column="2" x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}"
-                        Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="120" IsEnabled="False"/>
+                        Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="100" IsEnabled="False"/>
             </Grid>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- Dialog para contraseña -->
         <Border x:Name="PasswordDialog" Background="#CC000000" Visibility="Collapsed">
-            <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="12" Padding="40" MaxWidth="500" MaxHeight="300" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="12" Padding="30" MaxWidth="450" MinWidth="350" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel>
-                    <TextBlock Text="Ingresar contraseña" Style="{StaticResource TitleTextStyle}" FontSize="24" Margin="0,0,0,20"/>
-                    <TextBlock x:Name="NetworkNameText" FontSize="16" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,20"/>
+                    <TextBlock Text="Ingresar contraseña" Style="{StaticResource TitleTextStyle}" FontSize="22" Margin="0,0,0,15"/>
+                    <TextBlock x:Name="NetworkNameText" FontSize="15" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,0,0,15"/>
                     <PasswordBox x:Name="PasswordBox" Style="{StaticResource ModernPasswordBoxStyle}" Margin="0,0,0,20"/>
                     <Grid>
-                        <Button Content="Cancelar" Style="{StaticResource SecondaryButtonStyle}" Click="CancelPassword_Click" HorizontalAlignment="Left" MinWidth="120"/>
-                        <Button Content="Conectar" Style="{StaticResource PrimaryButtonStyle}" Click="ConnectWithPassword_Click" HorizontalAlignment="Right" MinWidth="120"/>
+                        <Button Content="Cancelar" Style="{StaticResource SecondaryButtonStyle}" Click="CancelPassword_Click" HorizontalAlignment="Left" MinWidth="100"/>
+                        <Button Content="Conectar" Style="{StaticResource PrimaryButtonStyle}" Click="ConnectWithPassword_Click" HorizontalAlignment="Right" MinWidth="100"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -74,23 +76,23 @@
 
         <!-- Dialog de advertencia al saltar -->
         <Border x:Name="WarningDialog" Background="#CC000000" Visibility="Collapsed">
-            <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="12" Padding="40" MaxWidth="550" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Border Background="{DynamicResource BackgroundBrush}" CornerRadius="12" Padding="30" MaxWidth="500" MinWidth="400" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <StackPanel>
-                    <TextBlock Text="⚠️ Continuar sin Internet" Style="{StaticResource TitleTextStyle}" FontSize="24" Margin="0,0,0,20" HorizontalAlignment="Center"/>
-                    <TextBlock TextWrapping="Wrap" FontSize="16" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,15" TextAlignment="Center">
+                    <TextBlock Text="⚠️ Continuar sin Internet" Style="{StaticResource TitleTextStyle}" FontSize="22" Margin="0,0,0,15" HorizontalAlignment="Center"/>
+                    <TextBlock TextWrapping="Wrap" FontSize="15" Foreground="{DynamicResource TextBrush}" Margin="0,0,0,12" TextAlignment="Center">
                         Si continúas sin conexión a Internet:
                     </TextBlock>
-                    <StackPanel Margin="20,0,20,20">
-                        <TextBlock Text="• No se podrán descargar programas" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5"/>
-                        <TextBlock Text="• Algunas características estarán limitadas" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5"/>
-                        <TextBlock Text="• No se verificarán actualizaciones" FontSize="14" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,5"/>
+                    <StackPanel Margin="15,0,15,15">
+                        <TextBlock Text="• No se podrán descargar programas" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,4"/>
+                        <TextBlock Text="• Algunas características estarán limitadas" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,4"/>
+                        <TextBlock Text="• No se verificarán actualizaciones" FontSize="13" Foreground="{DynamicResource SecondaryTextBrush}" Margin="0,4"/>
                     </StackPanel>
-                    <TextBlock TextWrapping="Wrap" FontSize="15" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,25" TextAlignment="Center" FontWeight="Medium">
+                    <TextBlock TextWrapping="Wrap" FontSize="14" Foreground="{DynamicResource AccentBrush}" Margin="0,0,0,20" TextAlignment="Center" FontWeight="Medium">
                         Es altamente recomendado conectarse a Internet
                     </TextBlock>
                     <Grid>
-                        <Button Content="Volver" Style="{StaticResource PrimaryButtonStyle}" Click="CancelSkip_Click" HorizontalAlignment="Left" MinWidth="140"/>
-                        <Button Content="Continuar sin Internet" Style="{StaticResource SecondaryButtonStyle}" Click="ContinueWithoutInternet_Click" HorizontalAlignment="Right" MinWidth="200"/>
+                        <Button Content="Volver" Style="{StaticResource PrimaryButtonStyle}" Click="CancelSkip_Click" HorizontalAlignment="Left" MinWidth="110"/>
+                        <Button Content="Continuar sin Internet" Style="{StaticResource SecondaryButtonStyle}" Click="ContinueWithoutInternet_Click" HorizontalAlignment="Right" MinWidth="180"/>
                     </Grid>
                 </StackPanel>
             </Border>

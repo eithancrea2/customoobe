@@ -10,42 +10,46 @@
 
     <Grid>
         <!-- Mensajes de bienvenida que ocupan toda la pantalla -->
-        <StackPanel x:Name="WelcomeMessagesPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Viewbox Stretch="Uniform" MaxWidth="1400" MaxHeight="800" Margin="40">
+            <StackPanel x:Name="WelcomeMessagesPanel" VerticalAlignment="Center" HorizontalAlignment="Center">
 
-            <!-- Mensaje 1: Gracias por tu compra -->
-            <TextBlock x:Name="Message1"
-                       Style="{StaticResource TitleTextStyle}"
-                       FontSize="72"
-                       TextAlignment="Center"
-                       Text="Gracias por tu compra"
-                       Opacity="0"
-                       Margin="0,0,0,40"/>
+                <!-- Mensaje 1: Gracias por tu compra -->
+                <TextBlock x:Name="Message1"
+                           Style="{StaticResource TitleTextStyle}"
+                           FontSize="72"
+                           TextAlignment="Center"
+                           Text="Gracias por tu compra"
+                           Opacity="0"
+                           Margin="0,0,0,40"/>
 
-            <!-- Mensaje 2: Disfruta de tu [Nombre del Equipo] -->
-            <TextBlock x:Name="Message2"
-                       Style="{StaticResource TitleTextStyle}"
-                       FontSize="64"
-                       TextAlignment="Center"
-                       Opacity="0"
-                       Margin="0,0,0,40">
-                <Run Text="Disfruta de tu"/>
-                <Run x:Name="ComputerNameRun" Text="Equipo Premium" FontWeight="Bold"/>
-            </TextBlock>
+                <!-- Mensaje 2: Disfruta de tu [Nombre del Equipo] -->
+                <TextBlock x:Name="Message2"
+                           Style="{StaticResource TitleTextStyle}"
+                           FontSize="64"
+                           TextAlignment="Center"
+                           Opacity="0"
+                           Margin="0,0,0,40">
+                    <Run Text="Disfruta de tu"/>
+                    <Run x:Name="ComputerNameRun" Text="Equipo Premium" FontWeight="Bold"/>
+                </TextBlock>
 
-        </StackPanel>
+            </StackPanel>
+        </Viewbox>
 
         <!-- Panel de configuración que aparece después -->
-        <StackPanel x:Name="ConfigurationPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Width="600" Opacity="0" Visibility="Collapsed">
+        <Viewbox Stretch="Uniform" MaxWidth="900" MaxHeight="500" Margin="40">
+            <StackPanel x:Name="ConfigurationPanel" VerticalAlignment="Center" HorizontalAlignment="Center" Width="600" Opacity="0" Visibility="Collapsed">
 
-            <!-- Mensaje 3: Pero primero necesitas configurar unas cosas -->
-            <TextBlock x:Name="Message3"
-                       Style="{StaticResource TitleTextStyle}"
-                       FontSize="42"
-                       Text="Pero primero necesitas configurar unas cosas"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       Margin="0,0,0,60"/>
+                <!-- Mensaje 3: Pero primero necesitas configurar unas cosas -->
+                <TextBlock x:Name="Message3"
+                           Style="{StaticResource TitleTextStyle}"
+                           FontSize="42"
+                           Text="Pero primero necesitas configurar unas cosas"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Margin="0,0,0,60"/>
 
-        </StackPanel>
+            </StackPanel>
+        </Viewbox>
     </Grid>
 </Page>

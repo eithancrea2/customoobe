@@ -9,23 +9,24 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="700" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="700" MinWidth="500" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
 
             <!-- Título -->
             <TextBlock Style="{StaticResource TitleTextStyle}"
                        Text="¿Quién usará esta computadora?"
-                       Margin="0,0,0,50"/>
+                       Margin="0,0,0,30"/>
 
             <!-- Selector de avatar -->
-            <Grid Margin="0,0,0,40">
+            <Grid Margin="0,0,0,30">
                 <StackPanel HorizontalAlignment="Center">
                     <!-- Avatar seleccionado (grande) -->
-                    <Border Width="150" Height="150"
-                            CornerRadius="75"
-                            BorderThickness="4"
+                    <Border Width="120" Height="120"
+                            CornerRadius="60"
+                            BorderThickness="3"
                             BorderBrush="{DynamicResource AccentBrush}"
                             Background="{DynamicResource SecondaryBackgroundBrush}"
-                            Margin="0,0,0,30">
+                            Margin="0,0,0,20">
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
                         </Border.Effect>
@@ -35,7 +36,7 @@
                     </Border>
 
                     <!-- Lista de avatares disponibles -->
-                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" MaxWidth="600">
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" MaxWidth="500">
                         <WrapPanel x:Name="AvatarPanel" HorizontalAlignment="Center" Orientation="Horizontal">
                             <!-- Los avatares se agregarán dinámicamente -->
                         </WrapPanel>
@@ -45,8 +46,8 @@
                     <Button Style="{StaticResource SecondaryButtonStyle}"
                             Content="📷 Tomar foto con cámara"
                             Click="TakePhotoButton_Click"
-                            Margin="0,20,0,0"
-                            Padding="20,10"/>
+                            Margin="0,15,0,0"
+                            Padding="15,8"/>
                 </StackPanel>
             </Grid>
 
@@ -69,7 +70,7 @@
                        Margin="0,0,0,20"/>
 
             <!-- Botones de navegación -->
-            <Grid Margin="0,40,0,0">
+            <Grid Margin="0,30,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -81,7 +82,7 @@
                         Content="Atrás"
                         Click="BackButton_Click"
                         HorizontalAlignment="Left"
-                        MinWidth="150"/>
+                        MinWidth="120"/>
 
                 <Button Grid.Column="1"
                         x:Name="NextButton"
@@ -89,10 +90,11 @@
                         Content="Continuar"
                         Click="NextButton_Click"
                         HorizontalAlignment="Right"
-                        MinWidth="150"
+                        MinWidth="120"
                         IsEnabled="False"/>
             </Grid>
 
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
