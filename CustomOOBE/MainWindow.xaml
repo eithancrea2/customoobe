@@ -16,27 +16,20 @@
         Closing="Window_Closing">
 
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Panel izquierdo con animación -->
-        <Grid Grid.Column="0" Background="{DynamicResource AnimationBackgroundBrush}">
+        <!-- Panel izquierdo con animación (oculto inicialmente, se mostrará cuando sea necesario) -->
+        <Grid x:Name="LeftPanel" Width="0" HorizontalAlignment="Left" Background="{DynamicResource AnimationBackgroundBrush}" Panel.ZIndex="1">
             <Canvas x:Name="AnimationCanvas" ClipToBounds="True">
                 <!-- Aquí irán las animaciones generadas dinámicamente -->
             </Canvas>
         </Grid>
 
-        <!-- Panel derecho con contenido -->
-        <Grid Grid.Column="1">
-            <Frame x:Name="ContentFrame"
-                   NavigationUIVisibility="Hidden"
-                   Background="Transparent"/>
-        </Grid>
+        <!-- Contenido principal (ocupa toda la pantalla inicialmente) -->
+        <Frame x:Name="ContentFrame"
+               NavigationUIVisibility="Hidden"
+               Background="Transparent"/>
 
         <!-- Botón de mute de música -->
-        <Button x:Name="MuteButton" Grid.Column="1"
+        <Button x:Name="MuteButton"
                 Width="40" Height="40"
                 HorizontalAlignment="Right" VerticalAlignment="Top"
                 Margin="0,20,20,0"
@@ -64,7 +57,7 @@
         </Button>
 
         <!-- Indicador de progreso en la parte inferior -->
-        <Grid Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,40">
+        <Grid VerticalAlignment="Bottom" Margin="0,0,0,40">
             <StackPanel x:Name="ProgressIndicator" Orientation="Horizontal" HorizontalAlignment="Center">
                 <!-- Los círculos de progreso se agregarán dinámicamente -->
             </StackPanel>

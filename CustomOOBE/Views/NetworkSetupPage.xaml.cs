@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 using CustomOOBE.Models;
 using CustomOOBE.Services;
 
@@ -13,6 +14,7 @@ namespace CustomOOBE.Views
         private readonly string _username;
         private readonly WiFiService _wifiService;
         private WiFiNetwork? _selectedNetwork;
+        private DispatcherTimer? _ethernetCheckTimer;
 
         public NetworkSetupPage(MainWindow mainWindow, string username)
         {
@@ -41,6 +43,42 @@ namespace CustomOOBE.Views
             else
             {
                 await LoadNetworks();
+                StartEthernetMonitoring();
+            }
+        }
+
+        private void StartEthernetMonitoring()
+        {
+            // Crear un timer para verificar si se conecta un adaptador Ethernet
+            _ethernetCheckTimer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(2) // Verificar cada 2 segundos
+            };
+            _ethernetCheckTimer.Tick += async (s, e) =>
+            {
+                if (_wifiService.IsEthernetConnected() && _wifiService.IsConnectedToInternet())
+                {
+                    _ethernetCheckTimer?.Stop();
+                    StatusText.Text = "✓ Cable Ethernet detectado y conectado";
+                    StatusText.Foreground = System.Windows.Media.Brushes.Green;
+                    StatusText.Visibility = Visibility.Visible;
+                    NextButton.IsEnabled = true;
+                    SkipButton.IsEnabled = false;
+
+                    // Avanzar automáticamente a la siguiente página después de 2 segundos
+                    await System.Threading.Tasks.Task.Delay(2000);
+                    NavigationService?.Navigate(new SoftwareSetupPage(_mainWindow, _username));
+                }
+            };
+            _ethernetCheckTimer.Start();
+        }
+
+        private void StopEthernetMonitoring()
+        {
+            if (_ethernetCheckTimer != null)
+            {
+                _ethernetCheckTimer.Stop();
+                _ethernetCheckTimer = null;
             }
         }
 
@@ -99,7 +137,11 @@ namespace CustomOOBE.Views
         }
 
         private async void RefreshButton_Click(object sender, RoutedEventArgs e) => await LoadNetworks();
-        private void BackButton_Click(object sender, RoutedEventArgs e) => NavigationService?.GoBack();
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            StopEthernetMonitoring();
+            NavigationService?.GoBack();
+        }
 
         private void SkipButton_Click(object sender, RoutedEventArgs e)
         {
@@ -109,6 +151,7 @@ namespace CustomOOBE.Views
 
         private void ContinueWithoutInternet_Click(object sender, RoutedEventArgs e)
         {
+            StopEthernetMonitoring();
             WarningDialog.Visibility = Visibility.Collapsed;
             NavigationService?.Navigate(new ThemeSetupPage(_mainWindow, _username));
         }
@@ -118,7 +161,11 @@ namespace CustomOOBE.Views
             WarningDialog.Visibility = Visibility.Collapsed;
         }
 
-        private void NextButton_Click(object sender, RoutedEventArgs e) => NavigationService?.Navigate(new SoftwareSetupPage(_mainWindow, _username));
+        private void NextButton_Click(object sender, RoutedEventArgs e)
+        {
+            StopEthernetMonitoring();
+            NavigationService?.Navigate(new SoftwareSetupPage(_mainWindow, _username));
+        }
         private void CancelPassword_Click(object sender, RoutedEventArgs e) => PasswordDialog.Visibility = Visibility.Collapsed;
 
         private void ConnectWithPassword_Click(object sender, RoutedEventArgs e)

@@ -17,6 +17,8 @@ namespace CustomOOBE.Views
         private readonly UserService _userService;
         private string _selectedAvatarPath = "";
         private readonly string[] _defaultAvatars;
+        private string? _existingUser = null;
+        private bool _isEditMode = false;
 
         public UserSetupPage(MainWindow mainWindow)
         {
@@ -27,11 +29,23 @@ namespace CustomOOBE.Views
             // Crear avatares por defecto si no existen
             _defaultAvatars = GenerateDefaultAvatars();
             LoadAvatars();
+
+            // Verificar si ya existe un usuario
+            _existingUser = _userService.GetFirstNonSystemUser();
+            if (_existingUser != null)
+            {
+                _isEditMode = true;
+                UsernameTextBox.Text = _existingUser;
+                UsernameTextBox.IsEnabled = false; // No permitir cambiar el nombre
+            }
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
             _mainWindow.UpdateProgressIndicator(1);
+
+            // Mostrar el panel izquierdo con animación
+            _mainWindow.ShowLeftPanel();
 
             // Animación de entrada
             var fadeIn = new DoubleAnimation
@@ -43,7 +57,10 @@ namespace CustomOOBE.Views
             };
             ContentPanel.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
-            UsernameTextBox.Focus();
+            if (!_isEditMode)
+            {
+                UsernameTextBox.Focus();
+            }
         }
 
         private string[] GenerateDefaultAvatars()
@@ -251,7 +268,8 @@ namespace CustomOOBE.Views
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService?.GoBack();
+            // No permitir volver atrás
+            e.Handled = true;
         }
 
         private async void NextButton_Click(object sender, RoutedEventArgs e)
@@ -265,17 +283,29 @@ namespace CustomOOBE.Views
             }
 
             NextButton.IsEnabled = false;
-            NextButton.Content = "Creando usuario...";
+            BackButton.IsEnabled = false;
 
             try
             {
-                // Crear usuario de Windows
-                var success = await _userService.CreateWindowsUserAsync(username);
+                bool success;
 
-                if (success && !string.IsNullOrEmpty(_selectedAvatarPath))
+                if (_isEditMode)
                 {
-                    // Establecer avatar
-                    await _userService.SetUserAvatarAsync(username, _selectedAvatarPath);
+                    // Modo edición: actualizar usuario existente
+                    NextButton.Content = "Actualizando usuario...";
+                    success = await _userService.UpdateUserAsync(username, _selectedAvatarPath);
+                }
+                else
+                {
+                    // Modo creación: crear nuevo usuario
+                    NextButton.Content = "Creando usuario...";
+                    success = await _userService.CreateWindowsUserAsync(username);
+
+                    if (success && !string.IsNullOrEmpty(_selectedAvatarPath))
+                    {
+                        // Establecer avatar
+                        await _userService.SetUserAvatarAsync(username, _selectedAvatarPath);
+                    }
                 }
 
                 if (success)
@@ -290,9 +320,12 @@ namespace CustomOOBE.Views
                 }
                 else
                 {
-                    MessageBox.Show("No se pudo crear el usuario. Por favor intenta con otro nombre.",
+                    MessageBox.Show(_isEditMode
+                        ? "No se pudo actualizar el usuario. Por favor intenta de nuevo."
+                        : "No se pudo crear el usuario. Por favor intenta con otro nombre.",
                         "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     NextButton.IsEnabled = true;
+                    BackButton.IsEnabled = true;
                     NextButton.Content = "Continuar";
                 }
             }
@@ -300,6 +333,7 @@ namespace CustomOOBE.Views
             {
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 NextButton.IsEnabled = true;
+                BackButton.IsEnabled = true;
                 NextButton.Content = "Continuar";
             }
         }

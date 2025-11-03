@@ -14,4 +14,7 @@
 
     <Color x:Key="AccentColor">#0A84FF</Color>
 
+    <!-- Color para pantallas secundarias - negro en tema oscuro -->
+    <SolidColorBrush x:Key="SecondaryDisplayBrush" Color="#000000"/>
+
 </ResourceDictionary>

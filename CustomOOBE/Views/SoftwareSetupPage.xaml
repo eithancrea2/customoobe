@@ -7,6 +7,10 @@
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="Programas recomendados" Margin="0,0,0,20"/>
             <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Selecciona los programas que deseas instalar" Margin="0,0,0,30"/>
 
+            <!-- Mensaje de estado de carga -->
+            <TextBlock x:Name="StatusText" FontSize="15" Foreground="{DynamicResource AccentBrush}"
+                      HorizontalAlignment="Center" Margin="0,0,0,20" Visibility="Collapsed"/>
+
             <ScrollViewer MaxHeight="500" VerticalScrollBarVisibility="Auto">
                 <ItemsControl x:Name="SoftwareList">
                     <ItemsControl.ItemTemplate>
@@ -69,8 +73,8 @@
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Content="Atrás" Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
-                <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar" Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="120"/>
+                <Button x:Name="BackButton" Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Content="Atrás" Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
+                <Button x:Name="SkipButton" Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar" Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="120"/>
                 <Button Grid.Column="2" x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}" Content="Instalar y Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="180"/>
             </Grid>
         </StackPanel>

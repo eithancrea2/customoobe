@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -18,6 +21,7 @@ namespace CustomOOBE
         private int _currentStep = 0;
         private readonly DispatcherTimer _animationTimer;
         private readonly AudioService _audioService;
+        private List<SecondaryDisplayWindow> _secondaryWindows = new List<SecondaryDisplayWindow>();
 
         public MainWindow()
         {
@@ -42,7 +46,13 @@ namespace CustomOOBE
             _keyboardBlocker.StartBlocking();
             _taskManagerBlocker.StartBlocking();
 
-            // Iniciar animación de fondo
+            // Crear ventanas en monitores secundarios
+            CreateSecondaryDisplayWindows();
+
+            // Posicionar la ventana principal en el monitor primario
+            PositionOnPrimaryScreen();
+
+            // Iniciar animación de fondo (pero el panel está oculto inicialmente)
             StartBackgroundAnimation();
 
             // Iniciar música de fondo si existe un archivo (opcional)
@@ -53,6 +63,38 @@ namespace CustomOOBE
             ContentFrame.Navigate(new WelcomePage(this));
         }
 
+        private void CreateSecondaryDisplayWindows()
+        {
+            // Obtener todas las pantallas excepto la primaria
+            var screens = Screen.AllScreens.Where(s => !s.Primary).ToList();
+
+            foreach (var screen in screens)
+            {
+                var secondaryWindow = new SecondaryDisplayWindow();
+
+                // Posicionar en la pantalla secundaria
+                secondaryWindow.Left = screen.Bounds.Left;
+                secondaryWindow.Top = screen.Bounds.Top;
+                secondaryWindow.Width = screen.Bounds.Width;
+                secondaryWindow.Height = screen.Bounds.Height;
+
+                secondaryWindow.Show();
+                _secondaryWindows.Add(secondaryWindow);
+            }
+        }
+
+        private void PositionOnPrimaryScreen()
+        {
+            var primaryScreen = Screen.PrimaryScreen;
+            if (primaryScreen != null)
+            {
+                this.Left = primaryScreen.Bounds.Left;
+                this.Top = primaryScreen.Bounds.Top;
+                this.Width = primaryScreen.Bounds.Width;
+                this.Height = primaryScreen.Bounds.Height;
+            }
+        }
+
         private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)
         {
             // Desactivar bloqueos
@@ -60,6 +102,12 @@ namespace CustomOOBE
             _taskManagerBlocker.StopBlocking();
             _animationTimer.Stop();
             _audioService.Dispose();
+
+            // Cerrar ventanas secundarias
+            foreach (var window in _secondaryWindows)
+            {
+                window.Close();
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -243,5 +291,33 @@ namespace CustomOOBE
         }
 
         public AudioService GetAudioService() => _audioService;
+
+        public void ShowLeftPanel()
+        {
+            // Animar la aparición del panel izquierdo
+            var widthAnimation = new DoubleAnimation
+            {
+                From = 0,
+                To = this.ActualWidth * 0.4, // 40% del ancho de la pantalla
+                Duration = TimeSpan.FromSeconds(0.5),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            LeftPanel.BeginAnimation(WidthProperty, widthAnimation);
+        }
+
+        public void HideLeftPanel()
+        {
+            // Animar el ocultamiento del panel izquierdo
+            var widthAnimation = new DoubleAnimation
+            {
+                From = LeftPanel.Width,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(0.5),
+                EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+            };
+
+            LeftPanel.BeginAnimation(WidthProperty, widthAnimation);
+        }
     }
 }

@@ -16,4 +16,7 @@
     <!-- Color para las animaciones - más oscuro y contrastante en modo claro -->
     <Color x:Key="AccentColor">#1D1D1F</Color>
 
+    <!-- Color para pantallas secundarias - blanco en tema claro -->
+    <SolidColorBrush x:Key="SecondaryDisplayBrush" Color="#FFFFFF"/>
+
 </ResourceDictionary>

@@ -27,17 +27,52 @@ namespace CustomOOBE.Views
 
         private async void StartWelcomeAnimation()
         {
-            // Animación secuencial de los mensajes
+            // Animación secuencial de los mensajes de bienvenida (pantalla completa)
             await AnimateMessage(Message1, 0);
             await System.Threading.Tasks.Task.Delay(2500);
 
             await AnimateMessage(Message2, 0);
-            await System.Threading.Tasks.Task.Delay(2500);
+            await System.Threading.Tasks.Task.Delay(3000);
 
-            await AnimateMessage(Message3, 0);
-            await System.Threading.Tasks.Task.Delay(1500);
+            // Desvanecer los mensajes de bienvenida
+            var fadeOut1 = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(0.8),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+            };
 
-            await AnimateMessage(ContinueButton, 0);
+            var fadeOut2 = new DoubleAnimation
+            {
+                From = 1,
+                To = 0,
+                Duration = TimeSpan.FromSeconds(0.8),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseIn }
+            };
+
+            Message1.BeginAnimation(UIElement.OpacityProperty, fadeOut1);
+            Message2.BeginAnimation(UIElement.OpacityProperty, fadeOut2);
+
+            await System.Threading.Tasks.Task.Delay(800);
+
+            // Ocultar el panel de mensajes de bienvenida
+            WelcomeMessagesPanel.Visibility = Visibility.Collapsed;
+
+            // Mostrar el panel de configuración y el panel lateral
+            ConfigurationPanel.Visibility = Visibility.Visible;
+            _mainWindow.ShowLeftPanel();
+
+            // Animar la aparición del mensaje de configuración
+            var fadeInPanel = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromSeconds(1),
+                EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut }
+            };
+
+            ConfigurationPanel.BeginAnimation(UIElement.OpacityProperty, fadeInPanel);
         }
 
         private System.Threading.Tasks.Task AnimateMessage(UIElement element, int delay)

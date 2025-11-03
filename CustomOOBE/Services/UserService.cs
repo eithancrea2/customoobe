@@ -197,5 +197,65 @@ namespace CustomOOBE.Services
                 return false;
             });
         }
+
+        public string? GetFirstNonSystemUser()
+        {
+            try
+            {
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "net",
+                        Arguments = "user",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        CreateNoWindow = true
+                    }
+                };
+
+                process.Start();
+                string output = process.StandardOutput.ReadToEnd();
+                process.WaitForExit();
+
+                // Usuarios del sistema que debemos ignorar
+                string[] systemUsers = { "Administrator", "DefaultAccount", "Guest", "WDAGUtilityAccount" };
+
+                // Parsear la salida del comando net user
+                var lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var line in lines)
+                {
+                    var users = line.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var user in users)
+                    {
+                        var trimmedUser = user.Trim();
+                        if (!string.IsNullOrEmpty(trimmedUser) &&
+                            !systemUsers.Contains(trimmedUser, StringComparer.OrdinalIgnoreCase) &&
+                            !line.StartsWith("-") &&
+                            !line.Contains("comando") &&
+                            !line.Contains("completó"))
+                        {
+                            return trimmedUser;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al obtener usuarios: {ex.Message}");
+            }
+            return null;
+        }
+
+        public async Task<bool> UpdateUserAsync(string username, string newAvatarPath)
+        {
+            // Actualizar solo el avatar del usuario existente
+            if (!string.IsNullOrEmpty(newAvatarPath))
+            {
+                return await SetUserAvatarAsync(username, newAvatarPath);
+            }
+            return true;
+        }
     }
 }

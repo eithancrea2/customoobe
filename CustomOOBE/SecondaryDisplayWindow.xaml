@@ -1,0 +1,14 @@
+<Window x:Class="CustomOOBE.SecondaryDisplayWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SecondaryDisplayWindow"
+        WindowState="Maximized"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Background="{DynamicResource SecondaryDisplayBrush}"
+        Topmost="True"
+        ShowInTaskbar="False">
+    <Grid>
+        <!-- Pantalla completa blanca o negra según el tema -->
+    </Grid>
+</Window>
