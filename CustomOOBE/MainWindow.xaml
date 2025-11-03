@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="Configuración Inicial"
-        WindowState="Maximized"
+        WindowState="Normal"
         WindowStyle="None"
         ResizeMode="NoResize"
         Background="{DynamicResource BackgroundBrush}"
@@ -17,8 +17,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="Auto" MinWidth="300" MaxWidth="500"/>
+            <ColumnDefinition Width="*" MinWidth="600"/>
         </Grid.ColumnDefinitions>
 
         <!-- Panel izquierdo con animación -->
@@ -32,11 +32,12 @@
         <Grid Grid.Column="1">
             <Frame x:Name="ContentFrame"
                    NavigationUIVisibility="Hidden"
-                   Background="Transparent"/>
+                   Background="Transparent"
+                   Margin="20"/>
         </Grid>
 
         <!-- Indicador de progreso en la parte inferior -->
-        <Grid Grid.Column="1" VerticalAlignment="Bottom" Margin="0,0,0,40">
+        <Grid Grid.Column="1" VerticalAlignment="Bottom" Margin="20,0,20,30">
             <StackPanel x:Name="ProgressIndicator" Orientation="Horizontal" HorizontalAlignment="Center">
                 <!-- Los círculos de progreso se agregarán dinámicamente -->
             </StackPanel>

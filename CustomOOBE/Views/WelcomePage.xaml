@@ -9,7 +9,8 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="600">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="600" Margin="20">
 
             <!-- Mensaje 1: Gracias por tu compra -->
             <TextBlock x:Name="Message1"
@@ -45,6 +46,7 @@
                     Opacity="0"
                     MinWidth="200"/>
 
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

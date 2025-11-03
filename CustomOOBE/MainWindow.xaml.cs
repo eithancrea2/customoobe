@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -17,6 +19,7 @@ namespace CustomOOBE
         private TaskManagerBlocker _taskManagerBlocker;
         private int _currentStep = 0;
         private readonly DispatcherTimer _animationTimer;
+        private List<SecondaryMonitorOverlay> _secondaryOverlays = new List<SecondaryMonitorOverlay>();
 
         public MainWindow()
         {
@@ -32,6 +35,8 @@ namespace CustomOOBE
             _animationTimer.Tick += AnimationTimer_Tick;
 
             SetupProgressIndicator();
+            PositionOnPrimaryMonitor();
+            CreateSecondaryMonitorOverlays();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -53,6 +58,100 @@ namespace CustomOOBE
             _keyboardBlocker.StopBlocking();
             _taskManagerBlocker.StopBlocking();
             _animationTimer.Stop();
+
+            // Cerrar todos los overlays secundarios
+            foreach (var overlay in _secondaryOverlays)
+            {
+                overlay.Close();
+            }
+            _secondaryOverlays.Clear();
+        }
+
+        private void PositionOnPrimaryMonitor()
+        {
+            try
+            {
+                // Obtener el monitor primario
+                var primaryScreen = Screen.PrimaryScreen;
+                if (primaryScreen != null)
+                {
+                    // Posicionar la ventana en el monitor primario
+                    this.Left = primaryScreen.Bounds.Left;
+                    this.Top = primaryScreen.Bounds.Top;
+                    this.Width = primaryScreen.Bounds.Width;
+                    this.Height = primaryScreen.Bounds.Height;
+
+                    // Ajustar el ancho del panel izquierdo según la resolución
+                    AdjustLeftPanelWidth(primaryScreen.Bounds.Width);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error positioning on primary monitor: {ex.Message}");
+            }
+        }
+
+        private void AdjustLeftPanelWidth(int screenWidth)
+        {
+            // Calcular el ancho del panel izquierdo basado en la resolución
+            // Para resoluciones pequeñas (< 1366px), usar 300px
+            // Para resoluciones medianas (1366-1920px), usar 35% del ancho
+            // Para resoluciones grandes (> 1920px), usar 500px max
+
+            double leftPanelWidth;
+
+            if (screenWidth < 1366)
+            {
+                leftPanelWidth = 300;
+            }
+            else if (screenWidth <= 1920)
+            {
+                leftPanelWidth = screenWidth * 0.35;
+            }
+            else
+            {
+                leftPanelWidth = 500;
+            }
+
+            // Actualizar el ancho del panel izquierdo
+            var grid = this.Content as Grid;
+            if (grid != null && grid.ColumnDefinitions.Count > 0)
+            {
+                grid.ColumnDefinitions[0].Width = new GridLength(leftPanelWidth);
+            }
+        }
+
+        private void CreateSecondaryMonitorOverlays()
+        {
+            try
+            {
+                var screens = Screen.AllScreens;
+                var primaryScreen = Screen.PrimaryScreen;
+
+                foreach (var screen in screens)
+                {
+                    // Saltar el monitor primario
+                    if (screen.Equals(primaryScreen))
+                        continue;
+
+                    // Crear un overlay para cada monitor secundario
+                    var overlay = new SecondaryMonitorOverlay
+                    {
+                        Left = screen.Bounds.Left,
+                        Top = screen.Bounds.Top,
+                        Width = screen.Bounds.Width,
+                        Height = screen.Bounds.Height,
+                        WindowState = WindowState.Normal
+                    };
+
+                    overlay.Show();
+                    _secondaryOverlays.Add(overlay);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error creating secondary overlays: {ex.Message}");
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

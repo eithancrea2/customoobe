@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="700" Margin="20" Opacity="0" x:Name="ContentPanel">
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="Configurar conexión a Internet" Margin="0,0,0,30"/>
 
             <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Padding="20" Margin="0,0,0,20">
@@ -55,7 +56,8 @@
                 <Button Grid.Column="2" x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}"
                         Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="120" IsEnabled="False"/>
             </Grid>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
 
         <!-- Dialog para contraseña -->
         <Border x:Name="PasswordDialog" Background="#CC000000" Visibility="Collapsed">

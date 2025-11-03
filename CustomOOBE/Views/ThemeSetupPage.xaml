@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="700" Margin="20" Opacity="0" x:Name="ContentPanel">
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="Personaliza tu experiencia" Margin="0,0,0,40"/>
 
             <!-- Selección de tema -->
@@ -23,6 +24,7 @@
                 <Button Style="{StaticResource SecondaryButtonStyle}" Content="Atrás" Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
                 <Button x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}" Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="120"/>
             </Grid>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

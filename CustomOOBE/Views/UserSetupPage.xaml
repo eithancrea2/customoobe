@@ -9,7 +9,8 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="700" Margin="20" Opacity="0" x:Name="ContentPanel">
 
             <!-- Título -->
             <TextBlock Style="{StaticResource TitleTextStyle}"
@@ -92,6 +93,7 @@
                         IsEnabled="False"/>
             </Grid>
 
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

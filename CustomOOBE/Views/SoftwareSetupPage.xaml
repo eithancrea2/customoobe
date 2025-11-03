@@ -3,7 +3,8 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="800" Opacity="0" x:Name="ContentPanel">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="800" Margin="20" Opacity="0" x:Name="ContentPanel">
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="Programas recomendados" Margin="0,0,0,20"/>
             <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Selecciona los programas que deseas instalar" Margin="0,0,0,30"/>
 
@@ -51,6 +52,7 @@
                 <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar" Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="120"/>
                 <Button Grid.Column="2" x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}" Content="Instalar y Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="180"/>
             </Grid>
-        </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>
