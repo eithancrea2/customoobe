@@ -110,7 +110,7 @@ namespace CustomOOBE
             }
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             // Bloquear teclas adicionales a nivel de ventana
             if (e.Key == Key.Escape || e.Key == Key.F4 ||
