@@ -26,6 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Referencia a System.Windows.Forms para usar Screen.AllScreens -->
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Assets\**\*.*" />
   </ItemGroup>
 
