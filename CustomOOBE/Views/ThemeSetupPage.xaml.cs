@@ -19,6 +19,7 @@ namespace CustomOOBE.Views
         private readonly List<SoftwarePackage>? _softwareToInstall;
         private bool _isDarkTheme;
         private string _selectedWallpaper = "";
+        private string _selectedLockScreen = "";
 
         public ThemeSetupPage(MainWindow mainWindow, string username, List<SoftwarePackage>? softwareToInstall = null)
         {
@@ -37,6 +38,7 @@ namespace CustomOOBE.Views
             ContentPanel.BeginAnimation(UIElement.OpacityProperty, fadeIn);
 
             LoadWallpapers();
+            LoadLockScreens();
             UpdateThemeButtons();
         }
 
@@ -109,6 +111,45 @@ namespace CustomOOBE.Views
             if (WallpapersPanel.Children.Count == 1) SelectWallpaper(border);
         }
 
+        private void LoadLockScreens()
+        {
+            var lockScreenPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "LockScreens");
+            Directory.CreateDirectory(lockScreenPath);
+
+            // Crear imágenes de pantalla de bloqueo si no existen
+            var colors = new[] { "#1E3A8A", "#7C2D12", "#14532D", "#581C87", "#831843", "#422006" };
+            for (int i = 0; i < colors.Length; i++)
+            {
+                var imagePath = Path.Combine(lockScreenPath, $"lockscreen_{i}.png");
+                if (!File.Exists(imagePath))
+                    CreateGradientWallpaper(imagePath, colors[i], colors[(i + 1) % colors.Length]);
+
+                AddLockScreenOption(imagePath);
+            }
+        }
+
+        private void AddLockScreenOption(string path)
+        {
+            var border = new Border
+            {
+                Width = 150,
+                Height = 85,
+                CornerRadius = new CornerRadius(8),
+                Margin = new Thickness(10),
+                Cursor = System.Windows.Input.Cursors.Hand,
+                BorderThickness = new Thickness(3),
+                BorderBrush = Brushes.Transparent,
+                Tag = path
+            };
+
+            var image = new Image { Source = new BitmapImage(new Uri(path)), Stretch = Stretch.UniformToFill };
+            border.Child = image;
+            border.MouseLeftButtonDown += (s, e) => SelectLockScreen(border);
+            LockScreenPanel.Children.Add(border);
+
+            if (LockScreenPanel.Children.Count == 1) SelectLockScreen(border);
+        }
+
         private void SelectWallpaper(Border selected)
         {
             foreach (var child in WallpapersPanel.Children)
@@ -116,6 +157,30 @@ namespace CustomOOBE.Views
 
             selected.BorderBrush = (SolidColorBrush)Application.Current.Resources["AccentBrush"];
             _selectedWallpaper = selected.Tag?.ToString() ?? "";
+
+            // Actualizar preview
+            UpdatePreview(_selectedWallpaper, "Fondo de escritorio");
+        }
+
+        private void SelectLockScreen(Border selected)
+        {
+            foreach (var child in LockScreenPanel.Children)
+                if (child is Border b) b.BorderBrush = Brushes.Transparent;
+
+            selected.BorderBrush = (SolidColorBrush)Application.Current.Resources["AccentBrush"];
+            _selectedLockScreen = selected.Tag?.ToString() ?? "";
+
+            // Actualizar preview
+            UpdatePreview(_selectedLockScreen, "Pantalla de bloqueo");
+        }
+
+        private void UpdatePreview(string imagePath, string type)
+        {
+            if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
+            {
+                PreviewImage.Source = new BitmapImage(new Uri(imagePath));
+                PreviewTypeText.Text = type;
+            }
         }
 
         private void UpdateThemeButtons()
@@ -149,8 +214,12 @@ namespace CustomOOBE.Views
             NextButton.Content = "Aplicando...";
 
             await _themeService.ApplyWindowsThemeAsync(_isDarkTheme);
+
             if (!string.IsNullOrEmpty(_selectedWallpaper))
                 await _themeService.SetWallpaperAsync(_selectedWallpaper);
+
+            if (!string.IsNullOrEmpty(_selectedLockScreen))
+                await _themeService.SetLockScreenAsync(_selectedLockScreen);
 
             NavigationService?.Navigate(new ReviewPage(_mainWindow, _username, _softwareToInstall));
         }

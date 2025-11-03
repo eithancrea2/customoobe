@@ -4,7 +4,7 @@
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="700" MinWidth="500" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="700" MinWidth="500" Opacity="0" x:Name="ContentPanel" Margin="20,50,20,50">
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="Configurar conexión a Internet" Margin="0,0,0,25"/>
 
             <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Padding="20" Margin="0,0,0,20">

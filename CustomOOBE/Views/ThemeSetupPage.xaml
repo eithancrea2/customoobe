@@ -4,7 +4,7 @@
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="700" MinWidth="500" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="700" MinWidth="500" Opacity="0" x:Name="ContentPanel" Margin="20,50,20,50">
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="Personaliza tu experiencia" Margin="0,0,0,30"/>
 
                 <!-- Selección de tema -->
@@ -14,10 +14,33 @@
                     <Button x:Name="DarkThemeBtn" Click="DarkTheme_Click" Style="{StaticResource PrimaryButtonStyle}" Content="🌙 Oscuro" MinWidth="130" Margin="8"/>
                 </StackPanel>
 
+                <!-- Preview del tema -->
+                <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Padding="15" Margin="0,0,0,20">
+                    <StackPanel>
+                        <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Vista previa" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+                        <Border x:Name="PreviewBorder" Width="280" Height="157" CornerRadius="8" BorderThickness="2"
+                                BorderBrush="{DynamicResource AccentBrush}">
+                            <Grid>
+                                <Image x:Name="PreviewImage" Stretch="UniformToFill"/>
+                                <Grid VerticalAlignment="Bottom" Background="#99000000" Height="40">
+                                    <TextBlock x:Name="PreviewTypeText" Text="Fondo de escritorio" FontSize="12"
+                                              Foreground="White" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
                 <!-- Selección de fondos -->
                 <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Fondo de pantalla" HorizontalAlignment="Left" Margin="0,0,0,15"/>
                 <ScrollViewer MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
                     <WrapPanel x:Name="WallpapersPanel" HorizontalAlignment="Center"/>
+                </ScrollViewer>
+
+                <!-- Selección de pantalla de bloqueo -->
+                <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Pantalla de bloqueo" HorizontalAlignment="Left" Margin="0,20,0,15"/>
+                <ScrollViewer MaxHeight="200" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                    <WrapPanel x:Name="LockScreenPanel" HorizontalAlignment="Center"/>
                 </ScrollViewer>
 
                 <Grid Margin="0,30,0,0">

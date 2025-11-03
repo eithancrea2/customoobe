@@ -20,6 +20,14 @@ namespace CustomOOBE.Views
         {
             _mainWindow.UpdateProgressIndicator(6);
 
+            // Ocultar el panel izquierdo y las bolitas de progreso para la pantalla final
+            _mainWindow.HideLeftPanel();
+            var progressGrid = _mainWindow.FindName("ProgressGrid") as FrameworkElement;
+            if (progressGrid != null)
+            {
+                progressGrid.Visibility = Visibility.Collapsed;
+            }
+
             // Animación de entrada
             await AnimateMessage(Message1);
             await System.Threading.Tasks.Task.Delay(2000);

@@ -166,13 +166,21 @@ namespace CustomOOBE.Services
 
             try
             {
-                var imageData = await _httpClient.GetByteArrayAsync(iconUrl);
+                // Configurar timeout y headers para la descarga
+                using var requestMessage = new HttpRequestMessage(HttpMethod.Get, iconUrl);
+                requestMessage.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
+
+                using var response = await _httpClient.SendAsync(requestMessage, HttpCompletionOption.ResponseContentRead);
+                response.EnsureSuccessStatusCode();
+
+                var imageData = await response.Content.ReadAsByteArrayAsync();
                 var bitmap = new BitmapImage();
                 using (var stream = new MemoryStream(imageData))
                 {
                     bitmap.BeginInit();
                     bitmap.CacheOption = BitmapCacheOption.OnLoad;
                     bitmap.StreamSource = stream;
+                    bitmap.DecodePixelWidth = 48; // Optimizar el tamaño del icono
                     bitmap.EndInit();
                     bitmap.Freeze();
                 }
@@ -181,6 +189,27 @@ namespace CustomOOBE.Services
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error al descargar icono desde {iconUrl}: {ex.Message}");
+                // Retornar un icono por defecto en caso de error
+                return CreateDefaultIcon();
+            }
+        }
+
+        private BitmapImage? CreateDefaultIcon()
+        {
+            try
+            {
+                // Crear un icono simple de respaldo
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri("pack://application:,,,/Assets/default_app_icon.png", UriKind.Absolute);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.DecodePixelWidth = 48;
+                bitmap.EndInit();
+                bitmap.Freeze();
+                return bitmap;
+            }
+            catch
+            {
                 return null;
             }
         }
@@ -230,32 +259,42 @@ namespace CustomOOBE.Services
 
                 progress?.Report(60);
 
-                // Instalar el software
+                // Instalar el software con argumentos específicos según el instalador
+                var arguments = GetInstallArguments(package.Name, tempPath);
+
                 var installProcess = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = tempPath,
-                        Arguments = "/S /silent /quiet /norestart", // Argumentos comunes para instalación silenciosa
+                        Arguments = arguments,
                         UseShellExecute = true,
-                        Verb = "runas",
-                        CreateNoWindow = true
+                        Verb = "runas", // Ejecutar como administrador
+                        CreateNoWindow = true,
+                        WindowStyle = ProcessWindowStyle.Hidden
                     }
                 };
 
+                Debug.WriteLine($"Instalando {package.Name} con comando: {tempPath} {arguments}");
                 installProcess.Start();
 
                 progress?.Report(80);
 
-                // Esperar a que termine la instalación (máximo 5 minutos)
-                if (!installProcess.WaitForExit(300000))
+                // Esperar a que termine la instalación (máximo 10 minutos para instaladores grandes)
+                var timeout = package.SizeInMB > 200 ? 600000 : 300000;
+                if (!installProcess.WaitForExit(timeout))
                 {
-                    installProcess.Kill();
+                    try
+                    {
+                        installProcess.Kill();
+                    }
+                    catch { }
                     Debug.WriteLine($"Timeout al instalar {package.Name}");
                     return false;
                 }
 
                 progress?.Report(100);
+                Debug.WriteLine($"Instalación de {package.Name} completada con código de salida: {installProcess.ExitCode}");
 
                 // Limpiar archivo temporal
                 try
@@ -274,6 +313,36 @@ namespace CustomOOBE.Services
                 Debug.WriteLine($"Error al descargar/instalar {package.Name}: {ex.Message}");
                 return false;
             }
+        }
+
+        private string GetInstallArguments(string packageName, string installerPath)
+        {
+            // Argumentos específicos según el tipo de instalador
+            var extension = Path.GetExtension(installerPath).ToLower();
+
+            // Argumentos específicos por nombre de paquete
+            if (packageName.Contains("Chrome"))
+                return "/silent /install";
+            else if (packageName.Contains("Firefox"))
+                return "/S";
+            else if (packageName.Contains("7-Zip"))
+                return "/S";
+            else if (packageName.Contains("VLC"))
+                return "/L=1033 /S";
+            else if (packageName.Contains("CCleaner"))
+                return "/S";
+            else if (packageName.Contains("Avast"))
+                return "/silent /norestart";
+            else if (packageName.Contains("Adobe") || packageName.Contains("Acrobat"))
+                return "/sPB /rs /msi";
+            else if (packageName.Contains("Discord"))
+                return "--silent";
+            else if (packageName.Contains("Zoom"))
+                return "/silent /norestart";
+            else if (extension == ".msi")
+                return "/qn /norestart"; // MSI installers (como LibreOffice)
+            else
+                return "/S /silent /quiet /norestart"; // Argumentos genéricos
         }
 
         public async Task<List<(SoftwarePackage Package, bool Success)>> InstallSelectedSoftwareAsync(

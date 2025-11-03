@@ -117,6 +117,23 @@ namespace CustomOOBE.Views
 
         private async System.Threading.Tasks.Task ShowFinalMessage()
         {
+            // Ocultar el panel izquierdo y las bolitas de progreso
+            _mainWindow.HideLeftPanel();
+            var progressGrid = _mainWindow.FindName("ProgressGrid") as FrameworkElement;
+            if (progressGrid != null)
+            {
+                var fadeOutProgress = new DoubleAnimation
+                {
+                    From = 1,
+                    To = 0,
+                    Duration = TimeSpan.FromSeconds(0.5),
+                    EasingFunction = new CubicEase { EasingMode = EasingMode.EaseIn }
+                };
+                progressGrid.BeginAnimation(UIElement.OpacityProperty, fadeOutProgress);
+                await System.Threading.Tasks.Task.Delay(500);
+                progressGrid.Visibility = Visibility.Collapsed;
+            }
+
             // Fade out del contenido actual
             var fadeOut = new DoubleAnimation
             {
@@ -130,9 +147,16 @@ namespace CustomOOBE.Views
             ContentPanel.BeginAnimation(UIElement.OpacityProperty, fadeOut);
             await System.Threading.Tasks.Task.Delay(800);
 
-            // Cambiar texto
+            // Cambiar texto con estilos más grandes y centrados
             StatusText.Text = "¡Disfruta!";
+            StatusText.FontSize = 48;
+            StatusText.FontWeight = FontWeights.SemiBold;
+            StatusText.TextAlignment = System.Windows.TextAlignment.Center;
+
             SubStatusText.Text = "Todo está listo para usar";
+            SubStatusText.FontSize = 28;
+            SubStatusText.TextAlignment = System.Windows.TextAlignment.Center;
+
             ProgressBar.Visibility = Visibility.Collapsed;
             ProgressText.Visibility = Visibility.Collapsed;
 

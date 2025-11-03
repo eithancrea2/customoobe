@@ -4,7 +4,7 @@
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="600" MinWidth="450" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="600" MinWidth="450" Opacity="0" x:Name="ContentPanel" Margin="20,50,20,50">
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="¿Qué te pareció?" Margin="0,0,0,15"/>
                 <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Tu opinión nos ayuda a mejorar" TextWrapping="Wrap" Margin="0,0,0,30"/>
 

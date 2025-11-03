@@ -4,7 +4,7 @@
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" MaxWidth="800" MinWidth="550" Opacity="0" x:Name="ContentPanel" Margin="20,50,100,50">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="800" MinWidth="550" Opacity="0" x:Name="ContentPanel" Margin="20,50,20,50">
                 <TextBlock Style="{StaticResource TitleTextStyle}" Text="Programas recomendados" Margin="0,0,0,15"/>
                 <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Selecciona los programas que deseas instalar" Margin="0,0,0,25"/>
 
