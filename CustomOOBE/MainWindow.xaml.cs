@@ -42,15 +42,19 @@ namespace CustomOOBE
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            // IMPORTANTE: Posicionar la ventana principal en el monitor primario PRIMERO
+            PositionOnPrimaryScreen();
+
+            // Asegurar que la ventana principal esté al frente y activa
+            this.Activate();
+            this.Focus();
+
+            // Crear ventanas en monitores secundarios DESPUÉS de posicionar la principal
+            CreateSecondaryDisplayWindows();
+
             // Activar bloqueo de teclas
             _keyboardBlocker.StartBlocking();
             _taskManagerBlocker.StartBlocking();
-
-            // Crear ventanas en monitores secundarios
-            CreateSecondaryDisplayWindows();
-
-            // Posicionar la ventana principal en el monitor primario
-            PositionOnPrimaryScreen();
 
             // Iniciar animación de fondo (pero el panel está oculto inicialmente)
             StartBackgroundAnimation();
@@ -88,10 +92,14 @@ namespace CustomOOBE
             var primaryScreen = Screen.PrimaryScreen;
             if (primaryScreen != null)
             {
+                // Establecer posición y tamaño en el monitor primario
                 this.Left = primaryScreen.Bounds.Left;
                 this.Top = primaryScreen.Bounds.Top;
                 this.Width = primaryScreen.Bounds.Width;
                 this.Height = primaryScreen.Bounds.Height;
+
+                // Forzar la actualización del layout
+                this.UpdateLayout();
 
                 // Actualizar la posición del indicador de progreso para que esté centrado en el monitor primario
                 UpdateProgressPosition();

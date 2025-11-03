@@ -3,7 +3,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent" Loaded="Page_Loaded">
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="700" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.4*" MinWidth="0" MaxWidth="800"/>
+                    <ColumnDefinition Width="0.6*" MinWidth="400"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           MaxWidth="700" Opacity="0" x:Name="ContentPanel" Margin="20">
             <TextBlock Style="{StaticResource TitleTextStyle}" Text="Configurar conexión a Internet" Margin="0,0,0,30"/>
 
             <Border Background="{DynamicResource SecondaryBackgroundBrush}" CornerRadius="12" Padding="20" Margin="0,0,0,20">
@@ -49,13 +57,15 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Content="Atrás"
-                        Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
+                        Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="100"/>
                 <Button Grid.Column="1" x:Name="SkipButton" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar"
-                        Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="120"/>
+                        Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="100"/>
                 <Button Grid.Column="2" x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}"
-                        Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="120" IsEnabled="False"/>
+                        Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="100" IsEnabled="False"/>
             </Grid>
         </StackPanel>
+            </Grid>
+        </ScrollViewer>
 
         <!-- Dialog para contraseña -->
         <Border x:Name="PasswordDialog" Background="#CC000000" Visibility="Collapsed">

@@ -9,23 +9,35 @@
       Loaded="Page_Loaded">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Right" Width="700" Opacity="0" x:Name="ContentPanel" Margin="0,0,100,0">
+        <!-- Usar ScrollViewer para permitir scroll en pantallas pequeñas -->
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!-- Columna izquierda flexible para el panel animado -->
+                    <ColumnDefinition Width="0.4*" MinWidth="0" MaxWidth="800"/>
+                    <!-- Columna derecha para el contenido -->
+                    <ColumnDefinition Width="0.6*" MinWidth="400"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           MaxWidth="700" Opacity="0" x:Name="ContentPanel" Margin="20">
 
             <!-- Título -->
             <TextBlock Style="{StaticResource TitleTextStyle}"
                        Text="¿Quién usará esta computadora?"
-                       Margin="0,0,0,50"/>
+                       TextWrapping="Wrap"
+                       Margin="0,0,0,30"/>
 
             <!-- Selector de avatar -->
-            <Grid Margin="0,0,0,40">
+            <Grid Margin="0,0,0,30">
                 <StackPanel HorizontalAlignment="Center">
                     <!-- Avatar seleccionado (grande) -->
-                    <Border Width="150" Height="150"
-                            CornerRadius="75"
-                            BorderThickness="4"
+                    <Border Width="120" Height="120"
+                            CornerRadius="60"
+                            BorderThickness="3"
                             BorderBrush="{DynamicResource AccentBrush}"
                             Background="{DynamicResource SecondaryBackgroundBrush}"
-                            Margin="0,0,0,30">
+                            Margin="0,0,0,20">
                         <Border.Effect>
                             <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
                         </Border.Effect>
@@ -69,7 +81,7 @@
                        Margin="0,0,0,20"/>
 
             <!-- Botones de navegación -->
-            <Grid Margin="0,40,0,0">
+            <Grid Margin="0,30,0,0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
@@ -81,7 +93,7 @@
                         Content="Atrás"
                         Click="BackButton_Click"
                         HorizontalAlignment="Left"
-                        MinWidth="150"/>
+                        MinWidth="120"/>
 
                 <Button Grid.Column="1"
                         x:Name="NextButton"
@@ -89,10 +101,12 @@
                         Content="Continuar"
                         Click="NextButton_Click"
                         HorizontalAlignment="Right"
-                        MinWidth="150"
+                        MinWidth="120"
                         IsEnabled="False"/>
             </Grid>
 
         </StackPanel>
+            </Grid>
+        </ScrollViewer>
     </Grid>
 </Page>
