@@ -36,7 +36,8 @@ namespace CustomOOBE.Views
             {
                 _isEditMode = true;
                 UsernameTextBox.Text = _existingUser;
-                UsernameTextBox.IsEnabled = false; // No permitir cambiar el nombre
+                // Permitir editar el nombre en modo edición
+                UsernameTextBox.IsEnabled = true;
                 NextButton.IsEnabled = true; // Habilitar el botón de continuar en modo edición
             }
         }
@@ -202,6 +203,65 @@ namespace CustomOOBE.Views
             }
         }
 
+        private string CropImageToCircle(string imagePath)
+        {
+            try
+            {
+                // Cargar la imagen original
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(imagePath);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+
+                // Determinar el tamaño del círculo (el menor entre ancho y alto)
+                int size = Math.Min(bitmap.PixelWidth, bitmap.PixelHeight);
+
+                // Calcular el área a recortar (centro de la imagen)
+                int offsetX = (bitmap.PixelWidth - size) / 2;
+                int offsetY = (bitmap.PixelHeight - size) / 2;
+
+                // Crear un rectángulo de recorte
+                var croppedBitmap = new CroppedBitmap(bitmap, new Int32Rect(offsetX, offsetY, size, size));
+
+                // Crear la imagen circular
+                const int outputSize = 400;
+                var renderBitmap = new RenderTargetBitmap(outputSize, outputSize, 96, 96, PixelFormats.Pbgra32);
+
+                var visual = new DrawingVisual();
+                using (var context = visual.RenderOpen())
+                {
+                    // Crear un círculo de recorte
+                    var geometry = new EllipseGeometry(new Point(outputSize / 2, outputSize / 2), outputSize / 2, outputSize / 2);
+
+                    // Dibujar la imagen recortada en forma circular
+                    context.PushClip(geometry);
+                    context.DrawImage(croppedBitmap, new Rect(0, 0, outputSize, outputSize));
+                    context.Pop();
+                }
+
+                renderBitmap.Render(visual);
+
+                // Guardar la imagen procesada
+                var processedPath = Path.Combine(
+                    Path.GetDirectoryName(imagePath) ?? "",
+                    Path.GetFileNameWithoutExtension(imagePath) + "_circular.png");
+
+                var encoder = new PngBitmapEncoder();
+                encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
+
+                using var stream = File.Create(processedPath);
+                encoder.Save(stream);
+
+                return processedPath;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error al recortar imagen: {ex.Message}");
+                return imagePath; // Retornar la imagen original si hay error
+            }
+        }
+
         private void TakePhotoButton_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -215,6 +275,14 @@ namespace CustomOOBE.Views
                 if (dialog.ShowDialog() == true)
                 {
                     _selectedAvatarPath = dialog.FileName;
+
+                    // Cargar y recortar la imagen a círculo si es necesario
+                    var croppedPath = CropImageToCircle(dialog.FileName);
+                    if (!string.IsNullOrEmpty(croppedPath))
+                    {
+                        _selectedAvatarPath = croppedPath;
+                    }
+
                     SelectedAvatarImage.Source = new BitmapImage(new Uri(_selectedAvatarPath));
 
                     // Deseleccionar avatares predefinidos

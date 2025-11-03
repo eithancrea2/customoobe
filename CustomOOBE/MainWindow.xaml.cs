@@ -147,7 +147,8 @@ namespace CustomOOBE
                 ProgressIndicator.Children.Add(circle);
             }
 
-            UpdateProgressIndicator(0);
+            // Ocultar inicialmente las bolitas de progreso
+            ProgressGrid.Visibility = Visibility.Collapsed;
         }
 
         public void UpdateProgressIndicator(int step)
