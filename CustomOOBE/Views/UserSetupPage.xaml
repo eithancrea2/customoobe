@@ -76,6 +76,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button Grid.Column="0"
+                        x:Name="BackButton"
                         Style="{StaticResource SecondaryButtonStyle}"
                         Content="Atrás"
                         Click="BackButton_Click"

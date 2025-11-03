@@ -231,7 +231,7 @@ namespace CustomOOBE.Services
                     {
                         var trimmedUser = user.Trim();
                         if (!string.IsNullOrEmpty(trimmedUser) &&
-                            !systemUsers.Contains(trimmedUser, StringComparer.OrdinalIgnoreCase) &&
+                            !systemUsers.Any(su => su.Equals(trimmedUser, StringComparison.OrdinalIgnoreCase)) &&
                             !line.StartsWith("-") &&
                             !line.Contains("comando") &&
                             !line.Contains("completó"))

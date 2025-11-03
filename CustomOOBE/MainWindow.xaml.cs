@@ -148,7 +148,7 @@ namespace CustomOOBE
             {
                 if (ProgressIndicator.Children[i] is Ellipse circle)
                 {
-                    var accentBrush = (SolidColorBrush)Application.Current.Resources["AccentBrush"];
+                    var accentBrush = (SolidColorBrush)System.Windows.Application.Current.Resources["AccentBrush"];
 
                     if (i < step)
                     {
@@ -216,7 +216,7 @@ namespace CustomOOBE
             };
 
             // Color basado en el tema actual con más contraste
-            var accentColor = (Color)Application.Current.Resources["AccentColor"];
+            var accentColor = (Color)System.Windows.Application.Current.Resources["AccentColor"];
             var brush = new RadialGradientBrush
             {
                 GradientStops = new GradientStopCollection
