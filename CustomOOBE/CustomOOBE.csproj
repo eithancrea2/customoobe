@@ -26,8 +26,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <!-- Referencia a Windows Forms para usar Screen.PrimaryScreen -->
-    <Reference Include="System.Windows.Forms" />
+    <!-- Habilitar el uso de Windows Forms en WPF para .NET 8 -->
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
   </ItemGroup>
 
   <ItemGroup>
