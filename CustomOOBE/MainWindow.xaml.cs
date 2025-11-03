@@ -92,7 +92,17 @@ namespace CustomOOBE
                 this.Top = primaryScreen.Bounds.Top;
                 this.Width = primaryScreen.Bounds.Width;
                 this.Height = primaryScreen.Bounds.Height;
+
+                // Actualizar la posición del indicador de progreso para que esté centrado en el monitor primario
+                UpdateProgressPosition();
             }
+        }
+
+        private void UpdateProgressPosition()
+        {
+            // El Grid ya está configurado para centrarse automáticamente con HorizontalAlignment="Center"
+            // y VerticalAlignment="Bottom", por lo que se mantendrá en su posición relativa
+            // sin importar el tamaño o posición de la ventana
         }
 
         private void Window_Closing(object? sender, System.ComponentModel.CancelEventArgs e)

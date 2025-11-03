@@ -37,6 +37,7 @@ namespace CustomOOBE.Views
                 _isEditMode = true;
                 UsernameTextBox.Text = _existingUser;
                 UsernameTextBox.IsEnabled = false; // No permitir cambiar el nombre
+                NextButton.IsEnabled = true; // Habilitar el botón de continuar en modo edición
             }
         }
 
@@ -234,6 +235,12 @@ namespace CustomOOBE.Views
 
         private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Si estamos en modo edición, no validar el nombre de usuario
+            if (_isEditMode)
+            {
+                return;
+            }
+
             var username = UsernameTextBox.Text.Trim();
 
             // Validar nombre de usuario

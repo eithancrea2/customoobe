@@ -59,9 +59,8 @@ namespace CustomOOBE.Views
             // Ocultar el panel de mensajes de bienvenida
             WelcomeMessagesPanel.Visibility = Visibility.Collapsed;
 
-            // Mostrar el panel de configuración y el panel lateral
+            // Mostrar el panel de configuración
             ConfigurationPanel.Visibility = Visibility.Visible;
-            _mainWindow.ShowLeftPanel();
 
             // Animar la aparición del mensaje de configuración
             var fadeInPanel = new DoubleAnimation

@@ -56,8 +56,8 @@
             </Button.Style>
         </Button>
 
-        <!-- Indicador de progreso en la parte inferior -->
-        <Grid VerticalAlignment="Bottom" Margin="0,0,0,40">
+        <!-- Indicador de progreso en la parte inferior (fijo, no se mueve) -->
+        <Grid x:Name="ProgressGrid" VerticalAlignment="Bottom" Margin="0,0,0,40" Panel.ZIndex="2">
             <StackPanel x:Name="ProgressIndicator" Orientation="Horizontal" HorizontalAlignment="Center">
                 <!-- Los círculos de progreso se agregarán dinámicamente -->
             </StackPanel>
