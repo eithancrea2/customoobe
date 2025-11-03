@@ -1,0 +1,97 @@
+<Page x:Class="CustomOOBE.Views.UserSetupPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignHeight="1080" d:DesignWidth="1920"
+      Background="Transparent"
+      Loaded="Page_Loaded">
+
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+
+            <!-- Título -->
+            <TextBlock Style="{StaticResource TitleTextStyle}"
+                       Text="¿Quién usará esta computadora?"
+                       Margin="0,0,0,50"/>
+
+            <!-- Selector de avatar -->
+            <Grid Margin="0,0,0,40">
+                <StackPanel HorizontalAlignment="Center">
+                    <!-- Avatar seleccionado (grande) -->
+                    <Border Width="150" Height="150"
+                            CornerRadius="75"
+                            BorderThickness="4"
+                            BorderBrush="{DynamicResource AccentBrush}"
+                            Background="{DynamicResource SecondaryBackgroundBrush}"
+                            Margin="0,0,0,30">
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="20" ShadowDepth="0" Opacity="0.3"/>
+                        </Border.Effect>
+                        <Image x:Name="SelectedAvatarImage"
+                               Stretch="UniformToFill"
+                               Source="/Assets/Avatars/default.png"/>
+                    </Border>
+
+                    <!-- Lista de avatares disponibles -->
+                    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" MaxWidth="600">
+                        <WrapPanel x:Name="AvatarPanel" HorizontalAlignment="Center" Orientation="Horizontal">
+                            <!-- Los avatares se agregarán dinámicamente -->
+                        </WrapPanel>
+                    </ScrollViewer>
+
+                    <!-- Botón para tomar foto con cámara -->
+                    <Button Style="{StaticResource SecondaryButtonStyle}"
+                            Content="📷 Tomar foto con cámara"
+                            Click="TakePhotoButton_Click"
+                            Margin="0,20,0,0"
+                            Padding="20,10"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Campo de nombre de usuario -->
+            <TextBlock Style="{StaticResource SubtitleTextStyle}"
+                       Text="Nombre de usuario"
+                       HorizontalAlignment="Left"
+                       Margin="0,0,0,10"/>
+
+            <TextBox x:Name="UsernameTextBox"
+                     Style="{StaticResource ModernTextBoxStyle}"
+                     MaxLength="20"
+                     TextChanged="UsernameTextBox_TextChanged"
+                     Margin="0,0,0,10"/>
+
+            <TextBlock x:Name="UsernameErrorText"
+                       Foreground="Red"
+                       FontSize="14"
+                       Visibility="Collapsed"
+                       Margin="0,0,0,20"/>
+
+            <!-- Botones de navegación -->
+            <Grid Margin="0,40,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Grid.Column="0"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Content="Atrás"
+                        Click="BackButton_Click"
+                        HorizontalAlignment="Left"
+                        MinWidth="150"/>
+
+                <Button Grid.Column="1"
+                        x:Name="NextButton"
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Content="Continuar"
+                        Click="NextButton_Click"
+                        HorizontalAlignment="Right"
+                        MinWidth="150"
+                        IsEnabled="False"/>
+            </Grid>
+
+        </StackPanel>
+    </Grid>
+</Page>

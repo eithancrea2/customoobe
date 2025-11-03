@@ -1,0 +1,28 @@
+<Page x:Class="CustomOOBE.Views.ThemeSetupPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent" Loaded="Page_Loaded">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="700" Opacity="0" x:Name="ContentPanel">
+            <TextBlock Style="{StaticResource TitleTextStyle}" Text="Personaliza tu experiencia" Margin="0,0,0,40"/>
+
+            <!-- Selección de tema -->
+            <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Tema del sistema" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,40">
+                <Button x:Name="LightThemeBtn" Click="LightTheme_Click" Style="{StaticResource PrimaryButtonStyle}" Content="☀️ Claro" MinWidth="150" Margin="10"/>
+                <Button x:Name="DarkThemeBtn" Click="DarkTheme_Click" Style="{StaticResource PrimaryButtonStyle}" Content="🌙 Oscuro" MinWidth="150" Margin="10"/>
+            </StackPanel>
+
+            <!-- Selección de fondos -->
+            <TextBlock Style="{StaticResource SubtitleTextStyle}" Text="Fondo de pantalla" HorizontalAlignment="Left" Margin="0,0,0,20"/>
+            <ScrollViewer MaxHeight="250" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <WrapPanel x:Name="WallpapersPanel" HorizontalAlignment="Center"/>
+            </ScrollViewer>
+
+            <Grid Margin="0,40,0,0">
+                <Button Style="{StaticResource SecondaryButtonStyle}" Content="Atrás" Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
+                <Button x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}" Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="120"/>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

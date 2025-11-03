@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+
+    <!-- Usar net8.0-windows sin versión específica de Windows SDK -->
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    
+    <!-- Configuración para evitar referencias automáticas a WinMD -->
+    <CsWinRTEnabled>false</CsWinRTEnabled>
+    <EnableDefaultItems>true</EnableDefaultItems>
+
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Management" Version="8.0.0" />
+    <!-- usar la variante Core que incluye binarios nativos -->
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.119" />
+    <!-- Variante netstandard compatible con .NET 8 -->
+    <PackageReference Include="SimpleWifi.netstandard" Version="2.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\**\*.*" />
+  </ItemGroup>
+
+</Project>

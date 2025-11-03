@@ -1,0 +1,17 @@
+<Page x:Class="CustomOOBE.Views.FinalPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="#FF000000" Loaded="Page_Loaded">
+    <Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Opacity="0" x:Name="ContentPanel">
+            <TextBlock x:Name="Message1" Text="Muchas gracias por configurar tu equipo" Style="{StaticResource TitleTextStyle}"
+                       Foreground="White" Opacity="0" Margin="0,0,0,40"/>
+
+            <TextBlock x:Name="Message2" Text="A continuación, disfruta" Style="{StaticResource SubtitleTextStyle}"
+                       Foreground="White" Opacity="0" Margin="0,0,0,60"/>
+
+            <TextBlock x:Name="Message3" Text="Iniciando Windows..." FontSize="18" Foreground="White" Opacity="0"
+                       HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</Page>
