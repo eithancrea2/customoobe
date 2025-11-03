@@ -5,11 +5,19 @@ using System.Linq;
 using System.Management;
 using System.Threading.Tasks;
 using CustomOOBE.Models;
+using SimpleWifi;
 
 namespace CustomOOBE.Services
 {
     public class WiFiService
     {
+        private readonly Wifi _wifi;
+
+        public WiFiService()
+        {
+            _wifi = new Wifi();
+        }
+
         public async Task<List<WiFiNetwork>> GetAvailableNetworksAsync()
         {
             return await Task.Run(() =>
@@ -18,65 +26,18 @@ namespace CustomOOBE.Services
 
                 try
                 {
-                    // Usar netsh para obtener las redes disponibles
-                    var process = new Process
+                    var accessPoints = _wifi.GetAccessPoints();
+
+                    foreach (var ap in accessPoints)
                     {
-                        StartInfo = new ProcessStartInfo
+                        networks.Add(new WiFiNetwork
                         {
-                            FileName = "netsh",
-                            Arguments = "wlan show networks mode=Bssid",
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true
-                        }
-                    };
-
-                    process.Start();
-                    string output = process.StandardOutput.ReadToEnd();
-                    process.WaitForExit();
-
-                    var lines = output.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                    WiFiNetwork? currentNetwork = null;
-
-                    foreach (var line in lines)
-                    {
-                        var trimmedLine = line.Trim();
-
-                        if (trimmedLine.StartsWith("SSID"))
-                        {
-                            if (currentNetwork != null)
-                            {
-                                networks.Add(currentNetwork);
-                            }
-
-                            var ssid = trimmedLine.Split(':')[1].Trim();
-                            if (!string.IsNullOrEmpty(ssid))
-                            {
-                                currentNetwork = new WiFiNetwork { SSID = ssid };
-                            }
-                        }
-                        else if (currentNetwork != null)
-                        {
-                            if (trimmedLine.StartsWith("Authentication"))
-                            {
-                                var auth = trimmedLine.Split(':')[1].Trim();
-                                currentNetwork.RequiresPassword = auth != "Open";
-                                currentNetwork.SecurityType = auth;
-                            }
-                            else if (trimmedLine.StartsWith("Signal"))
-                            {
-                                var signal = trimmedLine.Split(':')[1].Trim().Replace("%", "");
-                                if (int.TryParse(signal, out int signalValue))
-                                {
-                                    currentNetwork.SignalStrength = signalValue;
-                                }
-                            }
-                        }
-                    }
-
-                    if (currentNetwork != null)
-                    {
-                        networks.Add(currentNetwork);
+                            SSID = ap.Name,
+                            SignalStrength = (int)ap.SignalStrength,
+                            RequiresPassword = ap.IsSecure,
+                            SecurityType = ap.IsSecure ? "WPA2" : "Open",
+                            IsConnected = ap.IsConnected
+                        });
                     }
                 }
                 catch (Exception ex)
@@ -94,53 +55,39 @@ namespace CustomOOBE.Services
             {
                 try
                 {
-                    // Crear perfil XML para la red
-                    var profileXml = string.IsNullOrEmpty(password)
-                        ? CreateOpenNetworkProfile(ssid)
-                        : CreateSecureNetworkProfile(ssid, password);
-
-                    // Guardar el perfil
-                    var tempFile = System.IO.Path.GetTempFileName();
-                    System.IO.File.WriteAllText(tempFile, profileXml);
-
-                    // Agregar el perfil
-                    var addProcess = new Process
+                    var accessPoints = _wifi.GetAccessPoints().Where(ap => ap.Name == ssid).ToList();
+                    
+                    if (!accessPoints.Any())
                     {
-                        StartInfo = new ProcessStartInfo
-                        {
-                            FileName = "netsh",
-                            Arguments = $"wlan add profile filename=\"{tempFile}\"",
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true
-                        }
-                    };
+                        Debug.WriteLine($"Red {ssid} no encontrada");
+                        return false;
+                    }
 
-                    addProcess.Start();
-                    addProcess.WaitForExit();
+                    var accessPoint = accessPoints.First();
+                    AuthRequest authRequest;
 
-                    System.IO.File.Delete(tempFile);
-
-                    // Conectar a la red
-                    var connectProcess = new Process
+                    if (accessPoint.IsSecure && !string.IsNullOrEmpty(password))
                     {
-                        StartInfo = new ProcessStartInfo
+                        authRequest = new AuthRequest(accessPoint)
                         {
-                            FileName = "netsh",
-                            Arguments = $"wlan connect name=\"{ssid}\"",
-                            UseShellExecute = false,
-                            RedirectStandardOutput = true,
-                            CreateNoWindow = true
-                        }
-                    };
+                            Password = password
+                        };
+                    }
+                    else
+                    {
+                        authRequest = new AuthRequest(accessPoint);
+                    }
 
-                    connectProcess.Start();
-                    connectProcess.WaitForExit();
+                    var connected = accessPoint.Connect(authRequest);
 
-                    // Esperar un momento para que se conecte
-                    System.Threading.Thread.Sleep(3000);
+                    if (connected)
+                    {
+                        // Esperar un momento para que se establezca la conexión
+                        System.Threading.Thread.Sleep(3000);
+                        return IsConnectedToInternet();
+                    }
 
-                    return IsConnectedToInternet();
+                    return false;
                 }
                 catch (Exception ex)
                 {
@@ -199,59 +146,6 @@ namespace CustomOOBE.Services
             }
 
             return false;
-        }
-
-        private string CreateOpenNetworkProfile(string ssid)
-        {
-            return $@"<?xml version=""1.0""?>
-<WLANProfile xmlns=""http://www.microsoft.com/networking/WLAN/profile/v1"">
-    <name>{ssid}</name>
-    <SSIDConfig>
-        <SSID>
-            <name>{ssid}</name>
-        </SSID>
-    </SSIDConfig>
-    <connectionType>ESS</connectionType>
-    <connectionMode>auto</connectionMode>
-    <MSM>
-        <security>
-            <authEncryption>
-                <authentication>open</authentication>
-                <encryption>none</encryption>
-                <useOneX>false</useOneX>
-            </authEncryption>
-        </security>
-    </MSM>
-</WLANProfile>";
-        }
-
-        private string CreateSecureNetworkProfile(string ssid, string password)
-        {
-            return $@"<?xml version=""1.0""?>
-<WLANProfile xmlns=""http://www.microsoft.com/networking/WLAN/profile/v1"">
-    <name>{ssid}</name>
-    <SSIDConfig>
-        <SSID>
-            <name>{ssid}</name>
-        </SSID>
-    </SSIDConfig>
-    <connectionType>ESS</connectionType>
-    <connectionMode>auto</connectionMode>
-    <MSM>
-        <security>
-            <authEncryption>
-                <authentication>WPA2PSK</authentication>
-                <encryption>AES</encryption>
-                <useOneX>false</useOneX>
-            </authEncryption>
-            <sharedKey>
-                <keyType>passPhrase</keyType>
-                <protected>false</protected>
-                <keyMaterial>{password}</keyMaterial>
-            </sharedKey>
-        </security>
-    </MSM>
-</WLANProfile>";
         }
     }
 }
