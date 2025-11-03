@@ -165,7 +165,7 @@ namespace CustomOOBE.Services
             try
             {
                 // Buscar y cerrar el Administrador de tareas
-                int hwnd = FindWindow("TaskManagerWindow", null);
+                int hwnd = FindWindow("TaskManagerWindow", string.Empty);
                 if (hwnd != 0)
                 {
                     SendMessage(hwnd, WM_CLOSE, 0, 0);
@@ -173,13 +173,13 @@ namespace CustomOOBE.Services
                 }
 
                 // También buscar la versión de Windows 10/11
-                hwnd = FindWindow(null, "Task Manager");
+                hwnd = FindWindow(string.Empty, "Task Manager");
                 if (hwnd != 0)
                 {
                     SendMessage(hwnd, WM_CLOSE, 0, 0);
                 }
 
-                hwnd = FindWindow(null, "Administrador de tareas");
+                hwnd = FindWindow(string.Empty, "Administrador de tareas");
                 if (hwnd != 0)
                 {
                     SendMessage(hwnd, WM_CLOSE, 0, 0);

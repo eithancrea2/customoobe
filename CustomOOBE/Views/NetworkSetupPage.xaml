@@ -50,7 +50,7 @@
                 </Grid.ColumnDefinitions>
                 <Button Grid.Column="0" Style="{StaticResource SecondaryButtonStyle}" Content="Atrás"
                         Click="BackButton_Click" HorizontalAlignment="Left" MinWidth="120"/>
-                <Button Grid.Column="1" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar"
+                <Button Grid.Column="1" x:Name="SkipButton" Style="{StaticResource SecondaryButtonStyle}" Content="Saltar"
                         Click="SkipButton_Click" HorizontalAlignment="Center" MinWidth="120"/>
                 <Button Grid.Column="2" x:Name="NextButton" Style="{StaticResource PrimaryButtonStyle}"
                         Content="Continuar" Click="NextButton_Click" HorizontalAlignment="Right" MinWidth="120" IsEnabled="False"/>

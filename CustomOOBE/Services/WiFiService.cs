@@ -147,5 +147,19 @@ namespace CustomOOBE.Services
 
             return false;
         }
+
+        public bool IsWiFiConnected()
+        {
+            try
+            {
+                var accessPoints = _wifi.GetAccessPoints();
+                return accessPoints.Any(ap => ap.IsConnected);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error al verificar WiFi: {ex.Message}");
+                return false;
+            }
+        }
     }
 }
